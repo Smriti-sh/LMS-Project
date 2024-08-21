@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: false}));
 app.use("/api/products", productRoute);
 
 
-// app.use("/api/llm", llmRoute);
+app.use("/api/llm", llmRoute);
 
 
 app.get("/", (req, res) => {

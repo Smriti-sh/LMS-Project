@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-// const LLM = require('../controllers/llm.controller.js');
+const {createIndex} = require('../controllers/llm.controller.js');
 
 
-// router.get('/create', LLM.createIndex);
+router.get('/create', createIndex);
 
 module.exports = router;
