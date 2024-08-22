@@ -5,11 +5,12 @@ const productRoute = require("./routes/product.route.js");
 const llmRoute = require("./routes/llm.route.js");
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 
 // middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 
 // routes

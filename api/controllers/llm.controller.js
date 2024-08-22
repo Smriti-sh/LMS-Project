@@ -1,10 +1,10 @@
 const { OpenAIEmbeddings } = require('@langchain/openai');
 const { RetrievalQAChain } = require('langchain/chains');
-const { OpenAI } = require('@langchain/openai');
+const { ChatOpenAI } = require('@langchain/openai');
 
-const openAIApiKey = '';
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-const { PDFLoader } = require('langchain/document_loaders/fs/pdf');
+const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 
 const { RecursiveCharacterTextSplitter } = require('langchain/text_splitter');
 
@@ -22,6 +22,7 @@ const client = weaviate.client({
 
 createIndex = async (req, res) => {
   try {
+    const data = req.body;
     const pdfData = await this.readPdf(
       'https://lilcdn.in/lil-upload/1714953600000/femh101-a31ZDY1vA_JyW.pdf'
     );
@@ -31,7 +32,7 @@ createIndex = async (req, res) => {
       await WeaviateStore.fromDocuments(
         pdfData,
         new OpenAIEmbeddings({
-          openAIApiKey,
+          OPENAI_API_KEY,
         }),
         {
           client,
@@ -50,9 +51,10 @@ createIndex = async (req, res) => {
 
 addDocs = async (req, res) => {
   try {
+    const data = req.body;
     const loadedVectorStore = await WeaviateStore.fromExistingIndex(
       new OpenAIEmbeddings({
-        openAIApiKey,
+        OPENAI_API_KEY,
       }),
       {
         client,
@@ -131,17 +133,18 @@ readPdf = async (filePath) => {
 
 queryChain = async (req, res) => {
   try {
+    const data = req.body;
+
+    console.log(data, "data")
     if (data && data.query && data.query !== '') {
       const client = weaviate.client({
         scheme: process.env.WEAVIATE_SCHEME || 'https',
         host: process.env.WEAVIATE_HOST || 'localhost',
-        // apiKey: new weaviate.ApiKey(process.env.WEAVIATE_API_KEY || 'default')
       });
 
       const loadedVectorStore = await WeaviateStore.fromExistingIndex(
-        // eslint-disable-next-line spellcheck/spell-checker
         new OpenAIEmbeddings({
-          openAIApiKey,
+          OPENAI_API_KEY,
         }),
         {
           client,
@@ -151,9 +154,9 @@ queryChain = async (req, res) => {
       );
 
       const vectorStoreRetriever = loadedVectorStore.asRetriever();
-      const model = new OpenAI({
+      const model = new ChatOpenAI({
         modelName: 'gpt-3.5-turbo',
-        openAIApiKey,
+        OPENAI_API_KEY,
       });
 
       const chain = RetrievalQAChain.fromLLM(model, vectorStoreRetriever);
@@ -169,7 +172,6 @@ queryChain = async (req, res) => {
         data.wordLimit &&
         data.language
       ) {
-        // prompt = `Imagine you are an expert teacher of ${data.subject}. I'm a ${data.role} at ${data.leaningLevel} grades. I need your help in explaining ${data.query}, Please help me with response in ${data.format} form and preferably within the allotted ${data.wordLimit} words.`
         prompt = `As a ${data.role} at ${data.leaningLevel} grades seeking expertise in ${data.subject}, I require assistance with ${data.query}. Kindly provide a ${data.format} response in ${data.language}, ideally within ${data.wordLimit} words.`;
       } else if (data && data.query && data.query !== '') {
         prompt = data.query;
@@ -180,72 +182,37 @@ queryChain = async (req, res) => {
           ' Use LaTeX for coefficients, symbols, expressions, and equations with double dollar signs($$).';
       }
 
-      // prompt += " Extract the 'videoId' with 'url' and 'thumbnail'";
-      // why it is important to Learn and provide me 3 day to day
-      // activities where I can to leverage the learnings from ${data.query}
-      // Also mention the list of keywords to focus in your response
-      // with single line definition of each of these keywords.
-
       const startTime = performance.now();
 
       const answer = await chain.call({
         query: prompt,
       });
-      // For response streaming
-      // https://js.langchain.com/docs/modules/model_io/llms/streaming_llm
 
       const endTime = performance.now();
       const executionTime = endTime - startTime;
       console.log(`Execution time: ${executionTime} milliseconds`);
 
-      const relevantDocuments = await vectorStoreRetriever.getRelevantDocuments(
-        prompt
-      );
-
-      const videoDetail = await this.extractVideoDetails(relevantDocuments);
-      const videoDetails = [
-        ...new Map(videoDetail.map((item) => [item.videoId, item])).values(),
-      ];
-      console.log(videoDetails, 'videoDetails');
-
       const completionText = answer.text;
 
-      this.count_and_store_tokens_in_DB(
-        accessToken,
-        prompt,
-        completionText,
-        executionTime,
-        data.module && data.module !== '' ? data.module : 'promptBuilder',
-        relevantDocuments
-      );
-
       if (completionText) {
-        return {
+        res.status(200).json({
           status: true,
           query: prompt,
-          answer: completionText,
-          videoDetails,
-        };
+          answer: completionText
+        });
       }
 
-      return {
+      res.status(200).json({
         status: false,
         query: prompt,
-        message: 'something went wrong!',
-        videoDetails,
-      };
+        message: 'something went wrong!'
+      });
     }
 
-    return {
-      status: false,
-      message: 'Invalid payload!',
-    };
+    res.status(400).json({ message: 'Invalid payload!' });
   } catch (err) {
-    console.log(' Error:- ', err);
-    return {
-      status: false,
-      message: 'something went wrong!',
-    };
+    console.log(err, " ---------------- Error ---------------- ");
+    res.status(400).json(err);
   }
 };
 
@@ -257,64 +224,14 @@ uploadBook = async (req, res) => {
   );
   if (totalPages && totalPages > 0) {
     await this.addDocs(accessToken, splittedDocs);
-    // Not to allow same book in books and embeddings @jatin-sharam
     const bookData = {
       name: data.name,
-      subjectGroupId: data.subjectGroupId,
-      subjectGroup: data.subjectGroup,
-      // subjectId: data.subjectId,
-      // subject: data.subject,
-      // topicGroupId: data.topicGroupId,
-      // topicGroup: data.topicGroup,
-      // topicId: data.topicId,
-      // topic: data.topic,
-      // subTopicId: data.subTopicId,
-      // subTopic: data.subTopic,
       fileUrl: data.fileUrl,
       isArchived: false,
       author: data.author || '',
       totalPages: totalPages || 0,
       totalChunks: totalChunks || 0,
     };
-    if (
-      data.subjectId &&
-      data.subject &&
-      data.subjectId !== '' &&
-      data.subject !== ''
-    ) {
-      bookData.subjectId = data.subjectId;
-      bookData.subject = data.subject;
-    }
-
-    if (
-      data.topicGroupId &&
-      data.topicGroup &&
-      data.topicGroupId !== '' &&
-      data.topicGroup !== ''
-    ) {
-      bookData.topicGroupId = data.topicGroupId;
-      bookData.topicGroup = data.topicGroup;
-    }
-
-    if (
-      data.topicId &&
-      data.topic &&
-      data.topicId !== '' &&
-      data.topic !== ''
-    ) {
-      bookData.topicId = data.topicId;
-      bookData.topic = data.topic;
-    }
-
-    if (
-      data.subTopicId &&
-      data.subTopic &&
-      data.subTopicId !== '' &&
-      data.subTopic !== ''
-    ) {
-      bookData.subTopicId = data.subTopicId;
-      bookData.subTopic = data.subTopic;
-    }
 
     return await BookEmbedding.create({
       ...bookData,
@@ -329,4 +246,8 @@ uploadBook = async (req, res) => {
 
 module.exports = {
   createIndex,
+  addDocs,
+  readPdf,
+  queryChain,
+  uploadBook
 };
