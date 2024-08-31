@@ -12,7 +12,7 @@
 
       <div class="flex items-center">
         <button mat-icon-button class="mr-1 hover:bg-primary-900" title="Create">
-          <mat-icon class="text-white">check</mat-icon>
+          <mat-icon class="text-white" type="submit">check</mat-icon>
         </button>
         <button mat-icon-button [routerLink]="['../']" class="mr-1 hover:bg-red-900" title="Close">
           <mat-icon class="text-white">close</mat-icon>
@@ -22,7 +22,16 @@
   </div>
 
   <div class="uploadArea">
-    <div class="bin">
+
+    <!-- <div class="bin drag-drop-area" appDnd (fileDropped)="onFileDropped($event)" -->
+    <div class="bin drag-drop-area" appDnd
+    (drop)="onFileDrop($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    id="fileDrop">
+
+      <!-- <input type="file" id="fileDropRef" (change)="fileBrowserHandler($event)" multiple accept="application/pdf"/> -->
+      
       <div class="file-icon"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px"
           fill="#e8eaed">
           <path
@@ -36,22 +45,19 @@
               <path
                 d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
             </svg></span></div>
+            <input type="file" id="fileDropRef" multiple accept="application/pdf"/>
       </div>
     </div>
 
     <div class="flex flex-col justify-center w-full">
-      <mat-form-field style="margin-top: 10px; width: 95%; margin-left: 2.5%;" appearance="fill">
+      <mat-form-field [formGroup] = "uploadForm" style="margin-top: 10px; width: 95%; margin-left: 2.5%;" appearance="fill">
         <mat-label>Book Name*</mat-label>
         <input type="text" matInput [formControl]="bookName" placeholder="Write Book Name..." focus />
       </mat-form-field>
-      <mat-form-field appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
+      <mat-form-field [formGroup] = "uploadForm" appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
         <mat-label>Author Name*</mat-label>
         <input type="text" matInput [formControl]="authorName" placeholder="Write Author Name..." focus />
       </mat-form-field>
     </div>
   </div>
-
-
-
 </div>
-

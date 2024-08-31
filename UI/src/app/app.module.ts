@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
+import { DndDirective } from './dnd.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MatCardModule} from '@angular/material/card';
@@ -29,15 +29,19 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSidenavModule } from '@angular/material/sidenav';
+// import { FormBuilder, FormGroup } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    DndDirective,
     AppComponent,
     BooksComponent,
     GeneratorComponent,
     DrawerComponent
   ],
   imports: [
+    // FormBuilder,
+    // FormGroup,
     BrowserModule,
     AppRoutingModule,
     MatCardModule,

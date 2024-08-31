@@ -68,7 +68,12 @@ button{
     flex-direction: column;
     justify-content: center;
     padding-top: 13px;
+    /* cursor: pointer; */
 }
+
+/* .drag-drop-area.dragover {
+    background-color: #f0f0f0;
+  } */
 
 .first-line{
     padding: 5px;

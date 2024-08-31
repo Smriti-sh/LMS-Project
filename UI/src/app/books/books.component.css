@@ -24,6 +24,12 @@ tr:hover{
     background-color: #e6e6e8b5;;
 }
 
+/* Disable pointer events on the first row */
+tr:first-child {
+    pointer-events: none;
+}
+
+
 th,td{
     text-align: center;
 }
