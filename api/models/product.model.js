@@ -20,7 +20,7 @@ const ProductSchema = mongoose.Schema(
         },
         pages:{
             type:Number,
-            required: true,
+            // required: true,
             default:0
         },
         pdfLink:{

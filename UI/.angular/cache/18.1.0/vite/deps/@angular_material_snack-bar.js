@@ -2,7 +2,7 @@ import {
   Overlay,
   OverlayConfig,
   OverlayModule
-} from "./chunk-XQSION23.js";
+} from "./chunk-JEQRCFM6.js";
 import {
   animate,
   state,
@@ -22,10 +22,6 @@ import {
   Breakpoints,
   LiveAnnouncer
 } from "./chunk-HEZVL2N4.js";
-import "./chunk-DFMM5VXI.js";
-import {
-  Platform
-} from "./chunk-6KVH5XA6.js";
 import {
   BasePortalOutlet,
   CdkPortalOutlet,
@@ -33,8 +29,12 @@ import {
   PortalModule,
   TemplatePortal
 } from "./chunk-DH6TAW5A.js";
-import "./chunk-HWR36ZOF.js";
+import "./chunk-5WOXDHU3.js";
+import {
+  Platform
+} from "./chunk-6KVH5XA6.js";
 import "./chunk-MFBCSSD6.js";
+import "./chunk-HWR36ZOF.js";
 import {
   DOCUMENT
 } from "./chunk-4CXCO4J7.js";

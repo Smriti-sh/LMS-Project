@@ -8,6 +8,7 @@ import { FormBuilder, FormControl, FormControlName,FormGroup } from '@angular/fo
 import { HttpClient } from '@angular/common/http';
 import { DndDirective } from '../dnd.directive';
 import { HostListener } from '@angular/core';
+// import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-drawer',
@@ -15,6 +16,8 @@ import { HostListener } from '@angular/core';
   styleUrl: './drawer.component.css'
 })
 export class DrawerComponent implements OnInit{
+
+  // bookForm: FormGroup;
   opened=false;
   fileOver: boolean=false;
   fileDropped: any;
@@ -25,29 +28,67 @@ export class DrawerComponent implements OnInit{
   isApiCalling: boolean = false;
   uploadedFileName:string[]=[];
   
-
   fontSize: number = 14;
   fileName = '';
-  // bookName: FormControl = new FormControl('');
-  // authorName: FormControl = new FormControl('');
+  bookName: FormControl = new FormControl('');
+  authorName: FormControl = new FormControl('');
   //  Make create button disable until the book is not uloaded successfully @jatin-sharam
   isCreating: boolean = false;
   isFileDropped: boolean=false;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
-    private httpClient: HttpClient,
+    // private dataService : DataService,
+    private http: HttpClient,
     private booksComponent: BooksComponent,
     private _activatedRoute: ActivatedRoute,
-    private _changeDetectorRef: ChangeDetectorRef
-  ){}
+    private _changeDetectorRef: ChangeDetectorRef){}
+
+     // Group the form controls into a FormGroup
+  bookForm: FormGroup = new FormGroup({
+    bookName: this.bookName,
+    authorName: this.authorName,
+  });
+
+    // onSubmit() {
+    //   const bookData = this.bookForm.value;
+    //   this.dataService.addBook(bookData).subscribe(response => {
+    //     console.log('Book added:', response);
+    //   });
+    // }
 
   ngOnInit(): void {
     this.booksComponent?.matDrawer?.open();
     //payload
-    this.uploadForm = this.formBuilder.group({
-      profile: ['']
-    });
+    // this.uploadForm = this.formBuilder.group({
+    //   profile: ['']
+    // });
+  }
+
+  resetForm() {
+    this.bookForm.reset();
+    // this.isFileDropped = false;
+    // this.fileName = '';
+  }
+
+  // Method to handle form submission
+  onSubmit() {
+    if (this.bookForm.valid) {
+      const formData = this.bookForm.value;
+      
+      this.http.post('http://localhost:3000/api/products/', formData).subscribe(
+        res => {
+          console.log('Book added successfully', res);
+          this.resetForm();
+          console.log(this.bookForm.value);
+        },
+        error => {
+          console.error('There was an error!', error);
+        }
+      )} else {
+      console.error('Form is invalid');
+    }
   }
 
   closeDrawer(): Promise<MatDrawerToggleResult> | any {
@@ -71,37 +112,35 @@ export class DrawerComponent implements OnInit{
   }
 
   uploadFile(event:any){
-    // debugger;
-    const file = event.currentTarget.files[0];
-    const formObj = new FormData();
-    formObj.append('file',file);
+    debugger;
+    // const file = event.currentTarget.files[0];
+    // const formObj = new FormData();
+    // formObj.append('file',file);
 
-    this.httpClient.post(this.SERVER_URL,formObj).subscribe((res:any)=>{
-      debugger;
-    this.uploadedFileName.push(res);
-    })
+    // this.httpClient.post(this.SERVER_URL,formObj).subscribe((res:any)=>{
+    //   debugger;
+    // this.uploadedFileName.push(res);
+    // })
   }
 
-  onSubmit() {
-    const formData = new FormData();
-    formData.append('file', this.uploadForm.get('profile')!.value);
 
-    this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err)
-    );
-  }
+  // onSubmit() {
+  //   const formData = new FormData();
+  //   formData.append('file', this.uploadForm.get('profile')!.value);
+
+  //   this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
+  //     (res) => console.log(res),
+  //     (err) => console.log(err)
+  //   );
+  // }
 
   files: any[]=[];
-  authorName: FormControl = new FormControl('');
-  bookName: FormControl = new FormControl('');
 
   upload(pdfFile: File) {
     const formData = new FormData();
     // Append the PDF file to the form data
     formData.append('pdfFile', pdfFile);
     console.log(pdfFile, "pdfFile pdfFile");
-    
   }
 
   onFileDrop(event: any): void {
@@ -123,7 +162,6 @@ export class DrawerComponent implements OnInit{
       alert('Please drop a PDF file.');
     }
   }
-
 }
 
 // Event handler for drag over

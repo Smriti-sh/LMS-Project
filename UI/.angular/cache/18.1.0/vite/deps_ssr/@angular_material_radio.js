@@ -1,8 +1,5 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
-  NG_VALUE_ACCESSOR
-} from "./chunk-PJ7RX46S.js";
-import {
   MatCommonModule,
   MatRipple,
   MatRippleModule,
@@ -12,10 +9,13 @@ import {
   FocusMonitor
 } from "./chunk-JAM2QSD7.js";
 import "./chunk-V425XY6K.js";
-import "./chunk-AUTTC2CQ.js";
 import {
   UniqueSelectionDispatcher
 } from "./chunk-MDHTPDTX.js";
+import "./chunk-AUTTC2CQ.js";
+import {
+  NG_VALUE_ACCESSOR
+} from "./chunk-PJ7RX46S.js";
 import {
   CommonModule
 } from "./chunk-TEKTOLUD.js";

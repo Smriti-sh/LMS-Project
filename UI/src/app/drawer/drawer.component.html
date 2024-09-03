@@ -9,10 +9,10 @@
           <span class="ml-2 font-semibold light: text-white">Upload Book</span>
         </div>
       </ng-container>
-
       <div class="flex items-center">
-        <button mat-icon-button [routerLink]="['../']" (change)="onSubmit($event)" class="mr-1 hover:bg-primary-900" title="Create">
-          <mat-icon class="text-white" type="submit">check</mat-icon>
+        <!-- <button mat-icon-button  (ngSubmit)="onSubmit($event)" class="mr-1 hover:bg-primary-900" title="Create"> -->
+          <button mat-icon-button class="mr-1 hover:bg-primary-900" title="Create">
+          <mat-icon class="text-white" type="submit" >check</mat-icon>
         </button>
         <button mat-icon-button [routerLink]="['../']" class="mr-1 hover:bg-red-900" title="Close">
           <mat-icon class="text-white">close</mat-icon>
@@ -54,15 +54,17 @@
 
     </div>
 
+    <form [formGroup]="bookForm" id="bookForm" (ngSubmit)="onSubmit()">
     <div class="flex flex-col justify-center w-full">
-      <mat-form-field [formGroup] = "uploadForm" style="margin-top: 10px; width: 95%; margin-left: 2.5%;" appearance="fill">
-        <mat-label>Book Name*</mat-label>
-        <input type="text" matInput [formControl]="bookName" placeholder="Write Book Name..." focus />
+      <mat-form-field style="margin-top: 10px; width: 95%; margin-left: 2.5%;" appearance="fill">
+        <mat-label >Book Name*</mat-label>
+        <input type="text" matInput [formControl]="bookName" placeholder="Write Book Name..." focus id="bookName"/>
       </mat-form-field>
-      <mat-form-field [formGroup] = "uploadForm" appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
+      <mat-form-field [formGroup] = "bookForm" appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
         <mat-label>Author Name*</mat-label>
-        <input type="text" matInput [formControl]="authorName" placeholder="Write Author Name..." focus />
+        <input type="text" matInput [formControl]="authorName" placeholder="Write Author Name..." focus id="authorName"/>
       </mat-form-field>
     </div>
+  </form>
   </div>
 </div>

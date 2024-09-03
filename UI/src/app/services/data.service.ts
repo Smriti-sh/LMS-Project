@@ -9,7 +9,13 @@ import { Table } from '../../models/Table';
 })
 export class DataService {
 
+  // private apiUrl = 'http://localhost:3000/api/products';
+
   constructor(private http: HttpClient) { }
+
+  // addBook(book: Table): Observable<Table> {
+  //   return this.http.post<Table>(this.apiUrl, book);
+  // }
 
   getBooks(): Observable<Table[]> {
     return this.http.get<Table []>('http://localhost:3000/api/products');

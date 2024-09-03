@@ -2,6 +2,9 @@ const Product = require("../models/product.model");
 
 const getProducts = async (req, res) => {
   try {
+    // const books = await Book.find();
+    // res.json(books);
+
     const products = await Product.find({});
     res.status(200).json(products);
   } catch (error) {
@@ -11,6 +14,9 @@ const getProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   try {
+    // const books = await Book.find();
+    // res.json(books);
+
     const { id } = req.params;
     const product = await Product.findById(id);
     res.status(200).json(product);
@@ -21,6 +27,11 @@ const getProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
   try {
+    // const { bookName, authorName } = req.body;
+    // const newBook = new Book({ bookName, authorName });
+    // await newBook.save();
+    // res.json(newBook);
+
     const product = await Product.create(req.body);
     res.status(200).json(product);
   } catch (error) {

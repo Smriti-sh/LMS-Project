@@ -26,10 +26,10 @@ import {
   coerceBooleanProperty,
   coerceNumberProperty
 } from "./chunk-6KVH5XA6.js";
+import "./chunk-MFBCSSD6.js";
 import {
   SelectionModel
 } from "./chunk-HWR36ZOF.js";
-import "./chunk-MFBCSSD6.js";
 import {
   CommonModule,
   NgTemplateOutlet

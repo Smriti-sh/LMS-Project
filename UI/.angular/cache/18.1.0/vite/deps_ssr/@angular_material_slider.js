@@ -1,8 +1,5 @@
 import { createRequire } from 'module';const require = createRequire(import.meta.url);
 import {
-  NG_VALUE_ACCESSOR
-} from "./chunk-PJ7RX46S.js";
-import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatCommonModule,
   MatRipple,
@@ -16,6 +13,9 @@ import {
 import {
   Directionality
 } from "./chunk-AUTTC2CQ.js";
+import {
+  NG_VALUE_ACCESSOR
+} from "./chunk-PJ7RX46S.js";
 import "./chunk-TEKTOLUD.js";
 import {
   ANIMATION_MODULE_TYPE,
