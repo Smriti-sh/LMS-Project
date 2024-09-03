@@ -18,24 +18,68 @@ export class DrawerComponent implements OnInit{
   opened=false;
   fileOver: boolean=false;
   fileDropped: any;
-  upload: any;
   uploadForm: FormGroup = new FormGroup('');
-  SERVER_URL = "http://localhost:3000/api/upload";
+  SERVER_URL = "http://localhost:3000/api/ ";
+  userDetails:any;
+  attachment:any;
+  isApiCalling: boolean = false;
+  uploadedFileName:string[]=[];
+  
 
-  constructor(private router: Router, private formBuilder: FormBuilder, private httpClient: HttpClient){}
+  fontSize: number = 14;
+  fileName = '';
+  // bookName: FormControl = new FormControl('');
+  // authorName: FormControl = new FormControl('');
+  //  Make create button disable until the book is not uloaded successfully @jatin-sharam
+  isCreating: boolean = false;
+  isFileDropped: boolean=false;
 
-  //payload
+  constructor(private router: Router,
+    private formBuilder: FormBuilder,
+    private httpClient: HttpClient,
+    private booksComponent: BooksComponent,
+    private _activatedRoute: ActivatedRoute,
+    private _changeDetectorRef: ChangeDetectorRef
+  ){}
+
   ngOnInit(): void {
+    this.booksComponent?.matDrawer?.open();
+    //payload
     this.uploadForm = this.formBuilder.group({
       profile: ['']
     });
   }
 
-  onFileSelect(evt:any) {
-    if (evt.target.files.length > 0) {
-      const file = evt.target.files[0];
+  closeDrawer(): Promise<MatDrawerToggleResult> | any {
+    this.router.navigate(['../'], {
+      relativeTo: this._activatedRoute
+    })
+    return this.booksComponent?.matDrawer?.close();
+  }
+
+  onFileSelect(event:any) {
+    console.log('1');
+    
+    if (event.target.files.length > 0) {
+      console.log('2');
+      const file = event.target.files[0];
       this.uploadForm.get('profile')!.setValue(file);
+      this.fileName = file.name; 
+      this.isFileDropped = true;
+      console.log('3');
     }
+  }
+
+  uploadFile(event:any){
+    // debugger;
+    const file = event.currentTarget.files[0];
+    const formObj = new FormData();
+    formObj.append('file',file);
+
+    this.httpClient.post(this.SERVER_URL,formObj).subscribe((res:any)=>{
+      debugger;
+    this.uploadedFileName.push(res);
+    })
   }
 
   onSubmit() {
@@ -52,47 +96,34 @@ export class DrawerComponent implements OnInit{
   authorName: FormControl = new FormControl('');
   bookName: FormControl = new FormControl('');
 
-
-  // onFileDropped($event:any){
-  //   for(const item of $event) {
-  //     this.files.push(item);
-  //   }
-  // }
-
-  //  //Dragover
-  //  @HostListener('dragover',['$event']) public onDragOver(evt:any){
-  //   evt.preventDefault();
-  //   evt.stopPropagation();
-  //   console.log('Drag over');
+  upload(pdfFile: File) {
+    const formData = new FormData();
+    // Append the PDF file to the form data
+    formData.append('pdfFile', pdfFile);
+    console.log(pdfFile, "pdfFile pdfFile");
     
-  // }
+  }
 
-  // //Dragleave
-  // @HostListener('dragleave', ['$event']) public onDragLeave(evt:any){
-  //   evt.preventDefault();
-  //   evt.stopPropagation();
-  //   console.log('Drag leave');
-  // }
-
-  // //drop
-  // @HostListener('drop', ['$event']) public ondrop(evt:any){
-  //   evt.preventDefault();
-  //   evt.stopPropagation();
-  //   this.fileOver = false;
-  //   const files = evt.dataTransfer.files;
-  //   if (files.length > 0) {
-  //     this.fileDropped.emit(files);
-  //     //do some stuff here
-  //     console.log(`You Dropped ${files.length} files.`);
-  //   }
-  // }
-
-onFileDrop(event: any): void {
+  onFileDrop(event: any): void {
     event.preventDefault();
-    const files = event.dataTransfer.files;
-    this.upload(files);
-    console.log("dropped");
+    const files = event.dataTransfer?.files;
+  //   if (files.length > 0) {
+  //     const file = files[0]; // Assuming single file upload
+  //     this.upload(file); // Pass the actual file to the upload function
+  //     console.log("Dropped PDF file");
+  // } 
+  if (files && files.length > 0) {
+    const file = files[0];
     
+    if (file.type === 'application/pdf') {
+      this.isFileDropped = true; // hide drop div and show name div
+      this.fileName = file.name; 
+      console.log("PDF file dropped:", file);
+    } else {
+      alert('Please drop a PDF file.');
+    }
+  }
+
 }
 
 // Event handler for drag over
@@ -119,4 +150,7 @@ onDragLeave(event: any): void {
     }
 }
 
+ngOnDestroy(): void {
+  this.closeDrawer();
+}
 }

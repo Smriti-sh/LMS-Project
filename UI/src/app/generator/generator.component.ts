@@ -4,6 +4,7 @@ import { Format } from '../../models/Format';
 import { Routes } from '@angular/router';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-generator',
@@ -11,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './generator.component.css'
 })
 export class GeneratorComponent implements OnInit{
+
 
   formats: Format[]=[
     {

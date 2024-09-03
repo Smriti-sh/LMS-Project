@@ -11,7 +11,7 @@
       </ng-container>
 
       <div class="flex items-center">
-        <button mat-icon-button class="mr-1 hover:bg-primary-900" title="Create">
+        <button mat-icon-button [routerLink]="['../']" (change)="onSubmit($event)" class="mr-1 hover:bg-primary-900" title="Create">
           <mat-icon class="text-white" type="submit">check</mat-icon>
         </button>
         <button mat-icon-button [routerLink]="['../']" class="mr-1 hover:bg-red-900" title="Close">
@@ -32,21 +32,26 @@
 
       <!-- <input type="file" id="fileDropRef" (change)="fileBrowserHandler($event)" multiple accept="application/pdf"/> -->
       
+     <div class="before" *ngIf="!isFileDropped">
+
       <div class="file-icon"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px"
-          fill="#e8eaed">
-          <path
-            d="M319-250h322v-60H319v60Zm0-170h322v-60H319v60ZM220-80q-24 0-42-18t-18-42v-680q0-24 18-42t42-18h361l219 219v521q0 24-18 42t-42 18H220Zm331-554v-186H220v680h520v-494H551ZM220-820v186-186 680-680Z" />
-        </svg></div>
-      <div class="first-line">Drop PDF here</div>
-      <div class="or">or</div>
-      <div class="folder">
-        <div class="upload">Upload <span id="draft"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
-              viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-              <path
-                d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
-            </svg></span></div>
-            <input type="file" id="fileDropRef" multiple accept="application/pdf"/>
-      </div>
+        fill="#e8eaed">
+        <path d="M319-250h322v-60H319v60Zm0-170h322v-60H319v60ZM220-80q-24 0-42-18t-18-42v-680q0-24 18-42t42-18h361l219 219v521q0 24-18 42t-42 18H220Zm331-554v-186H220v680h520v-494H551ZM220-820v186-186 680-680Z" />
+      </svg></div>
+    <div class="first-line">Drop PDF here</div>
+    <div class="or">or</div>
+    <div class="folder" *ngIf="!isFileDropped">
+      <div class="upload">Upload <span id="draft"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+            viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+            <path
+              d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+          </svg></span></div>
+          <input class="hidden" type="file" id="fileDropRef" accept="application/pdf, .pdf" (change)="onFileSelect($event)"/>
+    </div>
+     </div>
+
+     <div class="after" *ngIf="isFileDropped"><p>{{fileName}}</p></div>
+
     </div>
 
     <div class="flex flex-col justify-center w-full">

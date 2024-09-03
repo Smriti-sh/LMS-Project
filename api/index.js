@@ -4,9 +4,11 @@ const Product = require("./models/product.model.js");
 const productRoute = require("./routes/product.route.js");
 const llmRoute = require("./routes/llm.route.js");
 const multer = require('multer');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
+app.use(bodyParser.json());
 // middleware
 app.use(cors());
 app.use(express.json());
