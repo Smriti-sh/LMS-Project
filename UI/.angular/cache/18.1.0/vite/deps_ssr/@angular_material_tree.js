@@ -3,6 +3,7 @@ import {
   MatCommonModule
 } from "./chunk-RMELPSJ5.js";
 import "./chunk-JAM2QSD7.js";
+import "./chunk-V425XY6K.js";
 import {
   CDK_TREE_NODE_OUTLET_NODE,
   CdkNestedTreeNode,
@@ -14,7 +15,6 @@ import {
   CdkTreeNodePadding,
   CdkTreeNodeToggle
 } from "./chunk-BV2Q6LJC.js";
-import "./chunk-V425XY6K.js";
 import {
   DataSource
 } from "./chunk-MDHTPDTX.js";

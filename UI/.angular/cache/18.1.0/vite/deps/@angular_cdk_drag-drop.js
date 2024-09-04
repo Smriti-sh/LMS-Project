@@ -1,12 +1,16 @@
 import {
+  CdkScrollableModule,
+  ScrollDispatcher,
+  ViewportRuler
+} from "./chunk-LPTQAD7E.js";
+import "./chunk-HWR36ZOF.js";
+import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
 } from "./chunk-HEZVL2N4.js";
 import {
-  CdkScrollableModule,
-  ScrollDispatcher,
-  ViewportRuler
-} from "./chunk-5WOXDHU3.js";
+  Directionality
+} from "./chunk-MFBCSSD6.js";
 import {
   _getEventTarget,
   _getShadowRoot,
@@ -15,10 +19,6 @@ import {
   coerceNumberProperty,
   normalizePassiveListenerOptions
 } from "./chunk-6KVH5XA6.js";
-import {
-  Directionality
-} from "./chunk-MFBCSSD6.js";
-import "./chunk-HWR36ZOF.js";
 import {
   DOCUMENT
 } from "./chunk-4CXCO4J7.js";

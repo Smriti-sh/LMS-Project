@@ -202,8 +202,11 @@ li::marker {
     color: white;
 }
 
-.bg-dark {
+/* .bg-dark {
     background-color: #0f172a
+} */
+.bg-dark {
+    background-color: #f5f6f8
 }
 
 .justify-end {
@@ -450,7 +453,8 @@ li::marker {
 
 /* Borders */
 .border {
-    border: 1px solid #e5e7eb;
+    /* border: 1px solid #e5e7eb; */
+    border: 1px solid #4bd0a6;
 }
 
 .border-2 {

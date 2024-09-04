@@ -10,6 +10,9 @@ import {
   RippleRenderer
 } from "./chunk-RMELPSJ5.js";
 import {
+  NG_VALUE_ACCESSOR
+} from "./chunk-PJ7RX46S.js";
+import {
   A,
   CdkObserveContent,
   ENTER,
@@ -28,9 +31,6 @@ import {
   SelectionModel
 } from "./chunk-MDHTPDTX.js";
 import "./chunk-AUTTC2CQ.js";
-import {
-  NG_VALUE_ACCESSOR
-} from "./chunk-PJ7RX46S.js";
 import {
   CommonModule,
   NgTemplateOutlet
