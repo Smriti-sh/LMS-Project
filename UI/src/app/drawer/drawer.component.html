@@ -10,8 +10,7 @@
         </div>
       </ng-container>
       <div class="flex items-center">
-        <!-- <button mat-icon-button  (ngSubmit)="onSubmit($event)" class="mr-1 hover:bg-primary-900" title="Create"> -->
-          <button mat-icon-button class="mr-1 hover:bg-primary-900" title="Create">
+        <button mat-icon-button  (click)="onSubmit()" class="mr-1 hover:bg-primary-900" title="Create">
           <mat-icon class="text-white" type="submit" >check</mat-icon>
         </button>
         <button mat-icon-button [routerLink]="['../']" class="mr-1 hover:bg-red-900" title="Close">
@@ -54,7 +53,7 @@
 
     </div>
 
-    <form [formGroup]="bookForm" id="bookForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="bookForm" id="bookForm">
     <div class="flex flex-col justify-center w-full">
       <mat-form-field style="margin-top: 10px; width: 95%; margin-left: 2.5%;" appearance="fill">
         <mat-label >Book Name*</mat-label>

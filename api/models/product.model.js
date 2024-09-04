@@ -10,11 +10,11 @@ const ProductSchema = mongoose.Schema(
             required:true,
             default:0
         },
-        name:{
+        bookName:{
             type:String,
             required: [type,"Please enter book's name"],
         },
-        author:{
+        authorName:{
             type:String,
             required: [type,"Please enter author's name"],
         },

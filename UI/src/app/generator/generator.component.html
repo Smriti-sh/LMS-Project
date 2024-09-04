@@ -31,7 +31,7 @@
 
                 <div class="one h-full">
 
-                  <mat-form-field class="fields">
+                  <mat-form-field appearance="outline" class="fields-">
                     <mat-label>Format</mat-label>
                     <mat-select>
                       @for (format of formats; track format) {
@@ -40,22 +40,13 @@
                     </mat-select>
                   </mat-form-field>
 
-                  <mat-form-field class="fields">
-                    <mat-label>Proficiency Level</mat-label>
-                    <mat-select>
-                      @for (format of formats; track format) {
-                        <mat-option [value]="format.value">{{format.value}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-
-                  <mat-form-field class="fields">
+                  <mat-form-field appearance="outline" class="field-border-radius">
                     <mat-label>No. of Questions</mat-label>
                     <input matInput type="number" min="0" max="50" required >
                     <!-- <mat-hint>milliseconds</mat-hint> -->
                   </mat-form-field>
 
-                  <mat-form-field class="fields">
+                  <mat-form-field appearance="outline" class="fields">
                     <mat-label>Name of Book</mat-label>
                     <mat-select>
                       @for (format of formats; track format) {
@@ -63,7 +54,6 @@
                       }
                     </mat-select>
                   </mat-form-field>
-
                 </div>
 
                 <!-- <div class="two"> -->

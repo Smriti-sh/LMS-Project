@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Route } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BooksComponent } from '../books/books.component';
@@ -17,7 +17,8 @@ import { HostListener } from '@angular/core';
 })
 export class DrawerComponent implements OnInit{
 
-  // bookForm: FormGroup;
+  @Output() newBookEvent = new EventEmitter<any>(); // Event emitter to send data to parent component
+
   opened=false;
   fileOver: boolean=false;
   fileDropped: any;
@@ -51,37 +52,29 @@ export class DrawerComponent implements OnInit{
     authorName: this.authorName,
   });
 
-    // onSubmit() {
-    //   const bookData = this.bookForm.value;
-    //   this.dataService.addBook(bookData).subscribe(response => {
-    //     console.log('Book added:', response);
-    //   });
-    // }
-
   ngOnInit(): void {
     this.booksComponent?.matDrawer?.open();
-    //payload
-    // this.uploadForm = this.formBuilder.group({
-    //   profile: ['']
-    // });
   }
 
   resetForm() {
     this.bookForm.reset();
-    // this.isFileDropped = false;
-    // this.fileName = '';
   }
 
   // Method to handle form submission
   onSubmit() {
     if (this.bookForm.valid) {
       const formData = this.bookForm.value;
+      console.log(formData);
+      if (!formData.bookName || !formData.authorName) {
+        alert('Please enter Book and Author name.')
+      }
       
       this.http.post('http://localhost:3000/api/products/', formData).subscribe(
         res => {
           console.log('Book added successfully', res);
           this.resetForm();
-          console.log(this.bookForm.value);
+          console.log(this.bookForm.value);   
+          this.closeDrawer();       
         },
         error => {
           console.error('There was an error!', error);
@@ -113,26 +106,8 @@ export class DrawerComponent implements OnInit{
 
   uploadFile(event:any){
     debugger;
-    // const file = event.currentTarget.files[0];
-    // const formObj = new FormData();
-    // formObj.append('file',file);
 
-    // this.httpClient.post(this.SERVER_URL,formObj).subscribe((res:any)=>{
-    //   debugger;
-    // this.uploadedFileName.push(res);
-    // })
   }
-
-
-  // onSubmit() {
-  //   const formData = new FormData();
-  //   formData.append('file', this.uploadForm.get('profile')!.value);
-
-  //   this.httpClient.post<any>(this.SERVER_URL, formData).subscribe(
-  //     (res) => console.log(res),
-  //     (err) => console.log(err)
-  //   );
-  // }
 
   files: any[]=[];
 
@@ -146,11 +121,6 @@ export class DrawerComponent implements OnInit{
   onFileDrop(event: any): void {
     event.preventDefault();
     const files = event.dataTransfer?.files;
-  //   if (files.length > 0) {
-  //     const file = files[0]; // Assuming single file upload
-  //     this.upload(file); // Pass the actual file to the upload function
-  //     console.log("Dropped PDF file");
-  // } 
   if (files && files.length > 0) {
     const file = files[0];
     
