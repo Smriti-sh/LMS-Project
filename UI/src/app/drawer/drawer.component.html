@@ -57,11 +57,11 @@
     <div class="flex flex-col justify-center w-full">
       <mat-form-field style="margin-top: 10px; width: 95%; margin-left: 2.5%;" appearance="fill">
         <mat-label >Book Name*</mat-label>
-        <input type="text" matInput [formControl]="bookName" placeholder="Write Book Name..." focus id="bookName"/>
+        <input type="text" matInput [formControl]="bookName" placeholder="Write Book Name..." focus id="bookName" ng-model="bookName" required/>
       </mat-form-field>
       <mat-form-field appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
         <mat-label>Author Name*</mat-label>
-        <input type="text" matInput [formControl]="authorName" placeholder="Write Author Name..." focus id="authorName"/>
+        <input type="text" matInput [formControl]="authorName" placeholder="Write Author Name..." focus id="authorName" ng-model="authorName" required/>
       </mat-form-field>
     </div>
   </form>

@@ -8,9 +8,6 @@ import {
   MatRippleModule
 } from "./chunk-OV4CHPC6.js";
 import {
-  SelectionModel
-} from "./chunk-HWR36ZOF.js";
-import {
   DOWN_ARROW,
   ENTER,
   FocusMonitor,
@@ -23,6 +20,9 @@ import {
   Directionality
 } from "./chunk-MFBCSSD6.js";
 import "./chunk-6KVH5XA6.js";
+import {
+  SelectionModel
+} from "./chunk-HWR36ZOF.js";
 import "./chunk-4CXCO4J7.js";
 import {
   Attribute,

@@ -12,9 +12,6 @@ import {
   RippleRenderer
 } from "./chunk-OV4CHPC6.js";
 import {
-  SelectionModel
-} from "./chunk-HWR36ZOF.js";
-import {
   A,
   CdkObserveContent,
   ENTER,
@@ -30,6 +27,9 @@ import {
   coerceBooleanProperty,
   coerceNumberProperty
 } from "./chunk-6KVH5XA6.js";
+import {
+  SelectionModel
+} from "./chunk-HWR36ZOF.js";
 import {
   CommonModule,
   NgTemplateOutlet

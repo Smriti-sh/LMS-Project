@@ -71,9 +71,13 @@
     margin-bottom: 30px;
 }
 
-::ng-deep .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-lable {
-    color:aqua;
-    background-color: wheat;
-    font-size: 12px;
-    padding: 1 10px;
+.mdc-text-field--outlined {
+    color:aqua !important;
+    background-color: wheat !important;
+    font-size: 12px !important;
+    padding: 1 10px !important;
+}
+
+.mdc-notched-outline__leading {
+    border-color: #026e78 !important;
 }

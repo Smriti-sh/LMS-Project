@@ -74,6 +74,7 @@ export class DrawerComponent implements OnInit{
           console.log('Book added successfully', res);
           this.resetForm();
           console.log(this.bookForm.value);   
+          this.newBookEvent.emit(res);
           this.closeDrawer();       
         },
         error => {

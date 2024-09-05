@@ -20,10 +20,6 @@ import {
   TemplatePortal
 } from "./chunk-O2OK6YUU.js";
 import {
-  CdkScrollable,
-  ViewportRuler
-} from "./chunk-EVVL3TWO.js";
-import {
   CdkMonitorFocus,
   CdkObserveContent,
   ENTER,
@@ -32,6 +28,10 @@ import {
   SPACE,
   hasModifierKey
 } from "./chunk-JAM2QSD7.js";
+import {
+  CdkScrollable,
+  ViewportRuler
+} from "./chunk-EVVL3TWO.js";
 import {
   Platform,
   normalizePassiveListenerOptions

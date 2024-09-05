@@ -1,13 +1,12 @@
 import {
-  CdkScrollableModule,
-  ScrollDispatcher,
-  ViewportRuler
-} from "./chunk-LPTQAD7E.js";
-import "./chunk-HWR36ZOF.js";
-import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
 } from "./chunk-HEZVL2N4.js";
+import {
+  CdkScrollableModule,
+  ScrollDispatcher,
+  ViewportRuler
+} from "./chunk-L2JSDQZF.js";
 import {
   Directionality
 } from "./chunk-MFBCSSD6.js";
@@ -19,6 +18,7 @@ import {
   coerceNumberProperty,
   normalizePassiveListenerOptions
 } from "./chunk-6KVH5XA6.js";
+import "./chunk-HWR36ZOF.js";
 import {
   DOCUMENT
 } from "./chunk-4CXCO4J7.js";

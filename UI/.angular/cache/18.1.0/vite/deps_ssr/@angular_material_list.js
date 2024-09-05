@@ -3,15 +3,15 @@ import {
   MatDividerModule
 } from "./chunk-JANGMT6O.js";
 import {
+  NG_VALUE_ACCESSOR
+} from "./chunk-PJ7RX46S.js";
+import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatCommonModule,
   MatPseudoCheckboxModule,
   MatRippleModule,
   RippleRenderer
 } from "./chunk-RMELPSJ5.js";
-import {
-  NG_VALUE_ACCESSOR
-} from "./chunk-PJ7RX46S.js";
 import {
   A,
   CdkObserveContent,

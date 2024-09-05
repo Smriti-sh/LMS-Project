@@ -10,11 +10,11 @@ import {
   EVENT_MANAGER_PLUGINS,
   EventManagerPlugin
 } from "./chunk-Z2J7YHO2.js";
+import "./chunk-2DIXYZV2.js";
 import {
   HTTP_ROOT_INTERCEPTOR_FNS,
   HttpClientModule
 } from "./chunk-2FNT3CEH.js";
-import "./chunk-2DIXYZV2.js";
 import {
   DOCUMENT,
   NullViewportScroller,

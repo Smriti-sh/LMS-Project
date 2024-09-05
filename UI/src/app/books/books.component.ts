@@ -20,6 +20,11 @@ export class BooksComponent implements OnInit {
   public getJsonValue: any;
   public displayColumn: string[]=['num','bookName','authorName','pages'];
   public dataSource: any =[];
+
+    // Method to update books list from another component
+    updateBooksList(newBook: any) {
+      this.dataSource.push(newBook);
+    }
   
   constructor(
     private http: HttpClient,
