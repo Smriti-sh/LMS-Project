@@ -10,7 +10,7 @@
         </div>
       </ng-container>
       <div class="flex items-center">
-        <button mat-icon-button  (click)="onSubmit()" class="mr-1 hover:bg-primary-900" title="Create">
+        <button [disabled]="bookForm.invalid" mat-icon-button  (click)="onSubmit()" class="mr-1 hover:bg-primary-900" title="Create">
           <mat-icon class="text-white" type="submit" >check</mat-icon>
         </button>
         <button mat-icon-button [routerLink]="['../']" class="mr-1 hover:bg-red-900" title="Close">
@@ -30,7 +30,6 @@
     id="fileDrop">
 
       <!-- <input type="file" id="fileDropRef" (change)="fileBrowserHandler($event)" multiple accept="application/pdf"/> -->
-      
      <div class="before" *ngIf="!isFileDropped">
 
       <div class="file-icon"><svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px"
@@ -40,12 +39,12 @@
     <div class="first-line">Drop PDF here</div>
     <div class="or">or</div>
     <div class="folder" *ngIf="!isFileDropped">
-      <div class="upload">Upload <span id="draft"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
+      <div (click)="fileUpload.click()" matTooltip="Click to upload file" class="upload cursor" >Upload <span id="draft"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
             viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
             <path
               d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
           </svg></span></div>
-          <input class="hidden" type="file" id="fileDropRef" accept="application/pdf, .pdf" (change)="onFileSelect($event)"/>
+          <input class="hidden" type="file" id="fileDropRef" accept="application/pdf, .pdf" #fileUpload (change)="onFileSelected($event)"/>
     </div>
      </div>
 
@@ -53,17 +52,24 @@
 
     </div>
 
-    <form [formGroup]="bookForm" id="bookForm">
-    <div class="flex flex-col justify-center w-full">
-      <mat-form-field style="margin-top: 10px; width: 95%; margin-left: 2.5%;" appearance="fill">
-        <mat-label >Book Name*</mat-label>
-        <input type="text" matInput [formControl]="bookName" placeholder="Write Book Name..." focus id="bookName" ng-model="bookName" required/>
-      </mat-form-field>
-      <mat-form-field appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
-        <mat-label>Author Name*</mat-label>
-        <input type="text" matInput [formControl]="authorName" placeholder="Write Author Name..." focus id="authorName" ng-model="authorName" required/>
-      </mat-form-field>
+    <div class="flex flex-col w-full justify-center items-center" style="color: white;">
+      <form [formGroup]="bookForm" class="flex flex-col text-white" style="width: 94%;">
+        <mat-form-field appearance="fill">
+          <mat-label>Book Name</mat-label>
+          <input matInput id="bookName" formControlName="bookName">
+          <mat-error *ngIf="bookForm.get('bookName')?.hasError('required') && bookForm.get('bookName')?.touched">
+            Book Name is required.
+          </mat-error>
+        </mat-form-field>
+          <!-- appearance="outline" -->
+        <mat-form-field appearance="fill" style="margin-top: 10px;">
+          <mat-label>Author Name</mat-label>
+          <input matInput id="authorName" formControlName="authorName">
+          <mat-error *ngIf="bookForm.get('authorName')?.hasError('required') && bookForm.get('authorName')?.touched">
+            Author Name is required.
+          </mat-error>
+        </mat-form-field>
+      </form>
     </div>
-  </form>
   </div>
 </div>

@@ -148,3 +148,7 @@ input::-webkit-file-upload-button,
 input::file-selector-button {
   display: none;
 }
+
+.hidden{
+    display: none;
+}

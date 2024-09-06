@@ -479,3 +479,7 @@ li::marker {
 .rounded-full {
     border-radius: 9999px;
 }
+
+.cursor{
+    cursor: pointer;
+}

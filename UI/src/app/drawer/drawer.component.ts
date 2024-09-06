@@ -1,165 +1,126 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Route } from '@angular/router';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, OnDestroy, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BooksComponent } from '../books/books.component';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormControlName,FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { DndDirective } from '../dnd.directive';
-import { HostListener } from '@angular/core';
-// import { DataService } from '../services/data.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-drawer',
   templateUrl: './drawer.component.html',
-  styleUrl: './drawer.component.css'
+  styleUrls: ['./drawer.component.css']
 })
-export class DrawerComponent implements OnInit{
+export class DrawerComponent implements OnInit, OnDestroy {
 
-  @Output() newBookEvent = new EventEmitter<any>(); // Event emitter to send data to parent component
+  @Output() newBookEvent = new EventEmitter<any>();
 
-  opened=false;
-  fileOver: boolean=false;
-  fileDropped: any;
-  uploadForm: FormGroup = new FormGroup('');
-  SERVER_URL = "http://localhost:3000/api/ ";
-  userDetails:any;
-  attachment:any;
-  isApiCalling: boolean = false;
-  uploadedFileName:string[]=[];
-  
-  fontSize: number = 14;
+  opened = false;
+  attachment: File | null = null;
+  isFileDropped = false;
   fileName = '';
-  bookName: FormControl = new FormControl('');
-  authorName: FormControl = new FormControl('');
-  //  Make create button disable until the book is not uloaded successfully @jatin-sharam
-  isCreating: boolean = false;
-  isFileDropped: boolean=false;
+  isApiCalling = false;
+
+  bookForm: FormGroup = new FormGroup({
+    bookName: new FormControl('', [Validators.required]),
+    authorName: new FormControl('', [Validators.required]),
+  });
 
   constructor(
     private router: Router,
-    private formBuilder: FormBuilder,
-    // private dataService : DataService,
     private http: HttpClient,
     private booksComponent: BooksComponent,
     private _activatedRoute: ActivatedRoute,
-    private _changeDetectorRef: ChangeDetectorRef){}
-
-     // Group the form controls into a FormGroup
-  bookForm: FormGroup = new FormGroup({
-    bookName: this.bookName,
-    authorName: this.authorName,
-  });
+    private _changeDetectorRef: ChangeDetectorRef,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
     this.booksComponent?.matDrawer?.open();
   }
 
-  resetForm() {
+  resetForm(): void {
     this.bookForm.reset();
+    this.attachment = null;
+    this.isFileDropped = false;
   }
 
-  // Method to handle form submission
-  onSubmit() {
-    if (this.bookForm.valid) {
-      const formData = this.bookForm.value;
-      console.log(formData);
-      if (!formData.bookName || !formData.authorName) {
-        alert('Please enter Book and Author name.')
-      }
-      
-      this.http.post('http://localhost:3000/api/products/', formData).subscribe(
+  onSubmit(): void {
+    if (this.bookForm.valid && this.attachment) {
+      const formData = new FormData();
+      formData.append('bookName', this.bookForm.get('bookName')?.value);
+      formData.append('authorName', this.bookForm.get('authorName')?.value);
+      formData.append('pdf', this.attachment, this.attachment.name);
+
+      this.isApiCalling = true;
+      this.http.post('http://localhost:3000/api/products/upload', formData).subscribe(
         res => {
           console.log('Book added successfully', res);
           this.resetForm();
-          console.log(this.bookForm.value);   
           this.newBookEvent.emit(res);
-          this.closeDrawer();       
+          this.closeDrawer();
         },
         error => {
-          console.error('There was an error!', error);
-        }
-      )} else {
-      console.error('Form is invalid');
+          console.error('Error adding book:', error);
+          this.toastr.error('There was an error!');
+        },
+        () => this.isApiCalling = false
+      );
+    } else {
+      this.toastr.error('Form is invalid or no file selected.');
     }
   }
 
-  closeDrawer(): Promise<MatDrawerToggleResult> | any {
+  closeDrawer(): Promise<MatDrawerToggleResult> | void {
+    this.newBookEvent.emit({book: 'LMS'});
     this.router.navigate(['../'], {
       relativeTo: this._activatedRoute
-    })
+    });
     return this.booksComponent?.matDrawer?.close();
   }
 
-  onFileSelect(event:any) {
-    console.log('1');
-    
-    if (event.target.files.length > 0) {
-      console.log('2');
-      const file = event.target.files[0];
-      this.uploadForm.get('profile')!.setValue(file);
-      this.fileName = file.name; 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files && input.files[0]?.type === 'application/pdf') {
+      this.attachment = input.files[0];
+      this.fileName = this.attachment.name;
       this.isFileDropped = true;
-      console.log('3');
+    } else {
+      this.toastr.error('Please select a valid PDF file.');
+      this.attachment = null;
     }
   }
 
-  uploadFile(event:any){
-    debugger;
-
-  }
-
-  files: any[]=[];
-
-  upload(pdfFile: File) {
-    const formData = new FormData();
-    // Append the PDF file to the form data
-    formData.append('pdfFile', pdfFile);
-    console.log(pdfFile, "pdfFile pdfFile");
-  }
-
-  onFileDrop(event: any): void {
+  onFileDrop(event: DragEvent): void {
     event.preventDefault();
     const files = event.dataTransfer?.files;
-  if (files && files.length > 0) {
-    const file = files[0];
-    
-    if (file.type === 'application/pdf') {
-      this.isFileDropped = true; // hide drop div and show name div
-      this.fileName = file.name; 
-      console.log("PDF file dropped:", file);
+    if (files && files.length > 0 && files[0].type === 'application/pdf') {
+      this.attachment = files[0];
+      this.fileName = this.attachment.name;
+      this.isFileDropped = true;
+      console.log('PDF file dropped:', files[0]);
     } else {
-      alert('Please drop a PDF file.');
+      this.toastr.error('Please drop a valid PDF file.');
     }
   }
-}
 
-// Event handler for drag over
-onDragOver(event: any): void {
-  event.preventDefault();
-    const fileDropELement = document.getElementById('fileDrop');
-    if (fileDropELement) {
-        // fileDropELement.style.backgroundColor = 'black';
-        console.log("drag over");
-        let name = document.getElementById('fileDrop') as HTMLElement;
-        name?.style.setProperty('background-color', 'grey')
-    }
-}
-
-// Event handler for drag leave
-onDragLeave(event: any): void {
+  onDragOver(event: DragEvent): void {
     event.preventDefault();
-    const fileDropELement = document.getElementById('fileDrop');
-    if (fileDropELement) {
-        // fileDropELement.style.backgroundColor = '';
-        console.log("Drag leave");
-        let name = document.getElementById('fileDrop') as HTMLElement;
-        name?.style.setProperty('background-color', '#131c2b')
+    const fileDropElement = document.getElementById('fileDrop');
+    if (fileDropElement) {
+      fileDropElement.style.backgroundColor = 'grey';
     }
-}
+  }
 
-ngOnDestroy(): void {
-  this.closeDrawer();
-}
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    const fileDropElement = document.getElementById('fileDrop');
+    if (fileDropElement) {
+      fileDropElement.style.backgroundColor = '#131c2b';
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.closeDrawer();
+  }
 }

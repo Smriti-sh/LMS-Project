@@ -2,8 +2,8 @@
   <mat-drawer-container class="flex-auto w-full h-full">
     <!-- Drawer -->
     <mat-drawer class="h-full dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'" style="border-radius: 0px; width: 30rem;"
-      [disableClose]="true" #matDrawer>
-      <router-outlet (newBookEvent)="updateBooksList($event)"></router-outlet>
+      [disableClose]="true" (closedStart)="getMethod()" #matDrawer>
+      <router-outlet></router-outlet>
     </mat-drawer>
 
     <!--  Drawer  Content -->

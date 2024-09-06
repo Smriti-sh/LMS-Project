@@ -46,6 +46,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
+import { ToastrModule } from "ngx-toastr";
 
 
 @NgModule({
@@ -98,9 +99,17 @@ import { MatTreeModule } from '@angular/material/tree';
         MatSliderModule,
         MatSnackBarModule,
         MatTreeModule,
+        ToastrModule.forRoot({
+            timeOut: 5000,
+            positionClass: "toast-top-right",
+            preventDuplicates: true,
+            maxOpened: 5,
+            // autoDismiss: false,
+            // closeButton: true
+        }),
     ],
     declarations: [
-       
+
     ],
     exports: [
         CommonModule,
@@ -149,7 +158,8 @@ import { MatTreeModule } from '@angular/material/tree';
         MatGridListModule,
         MatSliderModule,
         MatSnackBarModule,
-        MatTreeModule
+        MatTreeModule,
+        ToastrModule,
     ],
     providers: [],
 })

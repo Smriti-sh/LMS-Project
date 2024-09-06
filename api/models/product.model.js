@@ -1,38 +1,28 @@
-const { strict } = require("assert");
-const { timeStamp } = require("console");
-const mongoose = require("mongoose");
-const { type } = require("os");
+const mongoose = require('mongoose');
 
-const ProductSchema = mongoose.Schema(
-    {
-        num:{
-            type:Number,
-            required:true,
-            default:0
-        },
-        bookName:{
-            type:String,
-            required: [type,"Please enter book's name"],
-        },
-        authorName:{
-            type:String,
-            required: [type,"Please enter author's name"],
-        },
-        pages:{
-            type:Number,
-            // required: true,
-            default:0
-        },
-        pdfLink:{
-            type:String,
-            required:false,
-        },
+const ProductSchema = new mongoose.Schema({
+    bookName: {
+        type: String,
+        required: true
     },
-    {
-        timestamps:true,    //gives both created & updated time
-    }
-);
+    authorName: {
+        type: String,
+        required: true
+    },
+    pdfBuffer: {
+        type: Buffer,
+        required: true
+    },
+    pdfPath: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+}, {
+    timestamps: true,    //gives both created & updated time
+});
 
-const Product = mongoose.model("Product", ProductSchema);   //mongo itself adds 's' & lowercase to the collection name
-
-module.exports = Product;
+module.exports = mongoose.model('Product', ProductSchema);

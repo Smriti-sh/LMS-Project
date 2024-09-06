@@ -7,7 +7,7 @@ const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = r
 router.get('/', getProducts);
 router.get("/:id", getProduct);
 
-router.post("/", createProduct);
+router.post("/upload", createProduct);
 
 // update a product
 router.put("/:id", updateProduct);

@@ -6,16 +6,16 @@ import { DrawerComponent } from './drawer/drawer.component';
 
 const routes: Routes = [
   {
-    path: 'generator',
-    component: GeneratorComponent
-  },
-  {
-    path: 'books',
+    path: '',
     component: BooksComponent,
     children: [{
       path: 'add',
       component: DrawerComponent
     }]
+  },
+  {
+    path: 'generator',
+    component: GeneratorComponent
   }
 ];
 

@@ -26,7 +26,7 @@ export class AppComponent {
 
 
   updateRoute(route:string) {
-    this.pageTitle = route === 'books' ? 'Book Records' : 'Ask Questions';
+    this.pageTitle = route === 'generator' ? 'Ask Questions': 'Book Records' ;
     this.router.navigate(['', route], {
       relativeTo: this._activatedRoute
     });

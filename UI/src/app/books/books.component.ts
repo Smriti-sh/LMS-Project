@@ -1,38 +1,25 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Route, ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
-import { DataService } from '../services/data.service';
-import { error } from 'console';
-import { Table } from '../../models/Table';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { HttpHeaders } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDrawer } from '@angular/material/sidenav';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Table } from '../../models/Table';
 
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
-  styleUrl: './books.component.css'
+  styleUrl: './books.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush // Enable OnPush strategy for better performance
 })
-export class BooksComponent implements OnInit {
+export class BooksComponent implements OnInit, OnDestroy {
 
-  public getJsonValue: any;
-  public displayColumn: string[]=['num','bookName','authorName','pages'];
-  public dataSource: any =[];
+  displayColumn: string[] = ['num', 'bookName', 'authorName', 'pages'];
+  dataSource: Table[] = [];
 
-    // Method to update books list from another component
-    updateBooksList(newBook: any) {
-      this.dataSource.push(newBook);
-    }
-  
-  constructor(
-    private http: HttpClient,
-    private _router: Router,
-    private _changeDetectorRef: ChangeDetectorRef,
-    private _activatedRoute: ActivatedRoute,) {
-
-   }
+  private unsubscribe$ = new Subject<void>(); // To manage unsubscriptions
 
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort;
@@ -40,30 +27,44 @@ export class BooksComponent implements OnInit {
 
   drawerMode: 'side' | 'over' = 'over';
 
-  ngOnInit(): void {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
+  ngOnInit(): void {
     this.getMethod();
-    // this.postMethod();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
-  public getMethod() {
-    this.http.get('http://localhost:3000/api/products/').subscribe((data) => {
-      console.log(data);
-      this.getJsonValue = data;
-      this.dataSource = data;
-    });
+  ngOnDestroy(): void {
+    // Unsubscribe to avoid memory leaks
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  // Method to update books list from another component
+  updateBooksList(newBook: Table): void {
+    this.dataSource = [...this.dataSource, newBook]; // Use immutability for change detection to work properly
+    this.changeDetectorRef.markForCheck(); // Mark for check in case of OnPush strategy
+  }
+
+  public getMethod(): void {
+    this.http.get<Table[]>('http://localhost:3000/api/products/')
+      .pipe(takeUntil(this.unsubscribe$)) // Unsubscribe on component destruction
+      .subscribe(data => {
+        this.dataSource = data;
+        this.changeDetectorRef.markForCheck(); // Mark for change detection
+      });
   }
 
   openDrawer(): void {
-    this._router.navigate(['./add'], {
-      relativeTo: this._activatedRoute,
+    this.router.navigate(['./add'], {
+      relativeTo: this.activatedRoute,
     });
-    // Mark for check
-    this._changeDetectorRef.markForCheck();
-
     this.matDrawer?.open();
+    this.changeDetectorRef.markForCheck(); // Ensure the view is updated
   }
 
 }

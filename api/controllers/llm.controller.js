@@ -3,6 +3,9 @@ const { RetrievalQAChain } = require('langchain/chains');
 const { ChatOpenAI } = require('@langchain/openai');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const WEAVIATE_SCHEME = process.env.WEAVIATE_SCHEME;
+const WEAVIATE_HOST = process.env.WEAVIATE_HOST;
+const WEAVIATE_API_KEY = process.env.WEAVIATE_API_KEY;
 
 const { PDFLoader } = require('@langchain/community/document_loaders/fs/pdf');
 
@@ -12,25 +15,22 @@ const { default: weaviate } = require('weaviate-ts-client');
 
 const { WeaviateStore } = require('@langchain/weaviate');
 const { performance } = require('perf_hooks');
-const fetch = require('node-fetch');
+const fs = require('fs');
 
 const client = weaviate.client({
   scheme: 'https',
-  host: 'ljcyuin0t2s5tgu014y40g.c0.asia-southeast1.gcp.weaviate.cloud',
-  apiKey: new weaviate.ApiKey('UGtoMTjnNhluaosStuyPMteGEondaHp1yy2B'),
+  host: 'yzfyasyhroftxobszxkg.c0.asia-southeast1.gcp.weaviate.cloud',
+  apiKey: new weaviate.ApiKey('3I2jRBj9Wq8I2tVPN3nkTudvxdULv86eXHqh'),
 });
 
-createIndex = async (req, res) => {
+const addDocs = async (data, storeInExistingIndex=false) => {
   try {
-    const data = req.body;
-    const pdfData = await this.readPdf(
-      'https://lilcdn.in/lil-upload/1714953600000/femh101-a31ZDY1vA_JyW.pdf'
-    );
+    const { documents } = data;
 
-    if (pdfData && pdfData.length) {
+    if (storeInExistingIndex) {
       // Create a store and fill it with some texts + metadata
-      await WeaviateStore.fromDocuments(
-        pdfData,
+      const resp = await WeaviateStore.fromDocuments(
+        documents,
         new OpenAIEmbeddings({
           OPENAI_API_KEY,
         }),
@@ -41,106 +41,96 @@ createIndex = async (req, res) => {
           metadataKeys: ['bookName', 'author'],
         }
       );
+
+      console.log('Documents added to vector store:', resp);
+
+      return resp;
+
+    } else {
+      const loadedVectorStore = await WeaviateStore.fromExistingIndex(
+        new OpenAIEmbeddings({
+          OPENAI_API_KEY,
+        }),
+        {
+          client,
+          indexName: 'LMS',
+        }
+      );
+
+      const docs = await loadedVectorStore.addDocuments(documents);
+      console.log('Documents added to vector store:', docs);
+
+      return docs;
     }
-
-    res.status(200).json({ message: 'saved' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-addDocs = async (req, res) => {
-  try {
-    const data = req.body;
-    const loadedVectorStore = await WeaviateStore.fromExistingIndex(
-      new OpenAIEmbeddings({
-        OPENAI_API_KEY,
-      }),
-      {
-        client,
-        indexName: 'LMS',
-      }
-    );
-
-    const docs = await loadedVectorStore.addDocuments(data);
-    res.status(200).json({
-      status: true,
-      message: 'Documents Added',
-    });
   } catch (err) {
-    res.status(500).json({ message: error.message });
+    console.error('Error adding documents to vector store:', err);
+    throw new Error('Failed to add documents to vector store');
   }
 };
 
-readPdf = async (filePath) => {
+const readPdf = async (filePath, data) => {
   try {
-    const response = await fetch(filePath);
-    const respData = await response.blob();
-    console.log(
-      respData,
-      '-------------------------------------------respData'
-    );
+    // Read the PDF file from the local filesystem as a Buffer
+    const fileBuffer = fs.readFileSync(filePath);
 
-    const loader = new PDFLoader(respData, {
+    // Convert the Buffer to a Blob (which PDFLoader expects)
+    const blob = new Blob([fileBuffer], { type: 'application/pdf' });
+
+
+    const loader = new PDFLoader(blob, {
       pdfjs: () => import('pdfjs-dist/legacy/build/pdf.mjs'),
     });
 
+    // Load the PDF and extract text
     const docs = await loader.load();
-    console.log(docs.length, 'Number of docs');
+
+    console.log(docs.length, "Length");
 
     if (docs.length) {
-      let i = 1;
-      let s = 0;
-      docs.forEach((_cD) => {
-        console.log(
-          _cD.pageContent.length,
-          'Number of Characters in doc - ',
-          i
-        );
-        s += _cD.pageContent.length || 0;
-        i++;
-        _cD.metadata = {
-          bookName: data.bookName | '',
-          author: data.author || 'NCERT',
+      docs.forEach((doc, index) => {
+        doc.metadata = {
+          ...doc.metadata,
+          bookName: data.bookName,
+          author: data.authorName || 'LIL',
         };
       });
 
-      // splitter function
+      // Split the documents into smaller chunks
       const splitter = new RecursiveCharacterTextSplitter({
         chunkSize: 1000,
         chunkOverlap: 0,
       });
-
-      // created chunks from pdf
       const splittedDocs = await splitter.splitDocuments(docs);
-      console.log(docs[0].metadata, 'docs[0].metadata');
+
       return {
-        splittedDocs: splittedDocs || [],
-        totalPages: docs[0].metadata.pdf.totalPages || 0,
-        totalChunks: splittedDocs.length || 0,
+        splittedDocs,
+        totalPages: docs.length,
+        totalChunks: splittedDocs.length
       };
     }
 
     return {
       splittedDocs: [],
       totalPages: 0,
-      totalChunks: 0,
+      totalChunks: 0
     };
   } catch (error) {
-    console.log('Error:-', error);
+    console.error('Error reading PDF:', error);
+    throw new Error('Failed to read PDF');
   }
 };
 
 queryChain = async (req, res) => {
   try {
     const data = req.body;
-
-    console.log(data, "data")
     if (data && data.query && data.query !== '') {
+
       const client = weaviate.client({
-        scheme: process.env.WEAVIATE_SCHEME || 'https',
-        host: process.env.WEAVIATE_HOST || 'localhost',
+        scheme: 'https',
+        host: 'yzfyasyhroftxobszxkg.c0.asia-southeast1.gcp.weaviate.cloud',
+        apiKey: new weaviate.ApiKey('3I2jRBj9Wq8I2tVPN3nkTudvxdULv86eXHqh'),
       });
+
 
       const loadedVectorStore = await WeaviateStore.fromExistingIndex(
         new OpenAIEmbeddings({
@@ -216,36 +206,32 @@ queryChain = async (req, res) => {
   }
 };
 
-uploadBook = async (req, res) => {
-  const { BookEmbedding } = this.app.models;
-  const { splittedDocs, totalPages, totalChunks } = await this.readPdf(
-    data.fileUrl,
-    data
-  );
-  if (totalPages && totalPages > 0) {
-    await this.addDocs(accessToken, splittedDocs);
-    const bookData = {
-      name: data.name,
-      fileUrl: data.fileUrl,
-      isArchived: false,
-      author: data.author || '',
-      totalPages: totalPages || 0,
-      totalChunks: totalChunks || 0,
-    };
+const uploadBook = async (data) => {
+  try {
+    const { filePath, bookName, authorName } = data;
 
-    return await BookEmbedding.create({
-      ...bookData,
-    });
+    // Read the PDF and split it into chunks
+    const { splittedDocs, totalPages, totalChunks } = await readPdf(filePath, { bookName, authorName });
+
+    console.log(splittedDocs, "splittedDocs", totalPages, "totalPages", totalChunks, "totalChunks");
+
+    if (totalPages > 0) {
+      // Add documents to the vector store
+      await addDocs({ documents: splittedDocs }, true);
+
+      console.log(`Book '${bookName}' with ${totalChunks} chunks added to vector store.`);
+      return { success: true, totalPages, totalChunks };
+    } else {
+      console.error('No texts in the given PDF!');
+      return { success: false };
+    }
+  } catch (error) {
+    console.error('Error uploading book:', error);
+    throw new Error('Failed to upload the book and create embeddings');
   }
-
-  return {
-    error: true,
-    message: 'There are no texts in given pdf!',
-  };
 };
 
 module.exports = {
-  createIndex,
   addDocs,
   readPdf,
   queryChain,
