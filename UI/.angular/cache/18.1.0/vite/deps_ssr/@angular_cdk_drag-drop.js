@@ -2,12 +2,12 @@ import { createRequire } from 'module';const require = createRequire(import.meta
 import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-JAM2QSD7.js";
+} from "./chunk-J4LCNRLX.js";
 import {
   CdkScrollableModule,
   ScrollDispatcher,
   ViewportRuler
-} from "./chunk-EVVL3TWO.js";
+} from "./chunk-4P3RZUNW.js";
 import {
   _getEventTarget,
   _getShadowRoot,
@@ -15,14 +15,14 @@ import {
   coerceElement,
   coerceNumberProperty,
   normalizePassiveListenerOptions
-} from "./chunk-V425XY6K.js";
-import "./chunk-MDHTPDTX.js";
+} from "./chunk-TEIWWMHZ.js";
 import {
   Directionality
-} from "./chunk-AUTTC2CQ.js";
+} from "./chunk-FUFT6747.js";
 import {
   DOCUMENT
-} from "./chunk-TEKTOLUD.js";
+} from "./chunk-BRIAYAXG.js";
+import "./chunk-P3T5EBDV.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -50,7 +50,6 @@ import {
   booleanAttribute,
   createComponent,
   inject,
-  require_operators,
   setClassMetadata,
   signal,
   ɵɵInputTransformsFeature,
@@ -66,10 +65,14 @@ import {
   ɵɵdefineNgModule,
   ɵɵdirectiveInject,
   ɵɵinject
-} from "./chunk-XWNYNQY4.js";
+} from "./chunk-QVV6C23X.js";
+import {
+  require_operators
+} from "./chunk-IJKRIHJI.js";
 import {
   require_cjs
-} from "./chunk-VDZEJD3D.js";
+} from "./chunk-IXWXOSOL.js";
+import "./chunk-4SNWTT7U.js";
 import {
   __toESM
 } from "./chunk-NQ4HTGF6.js";

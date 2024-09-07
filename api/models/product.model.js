@@ -21,6 +21,10 @@ const ProductSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    totalPages:{
+        type: Number,
+        required: true
+    }
 }, {
     timestamps: true,    //gives both created & updated time
 });

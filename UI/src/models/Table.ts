@@ -3,4 +3,5 @@ export interface Table{
     name: string,
     author: string,
     pages?: number
+    totalPages:number
 }

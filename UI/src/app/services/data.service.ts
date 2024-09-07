@@ -21,3 +21,6 @@ export class DataService {
     return this.http.get<Table []>('http://localhost:3000/api/products');
   }
 }
+
+
+

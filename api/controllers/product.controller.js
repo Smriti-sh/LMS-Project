@@ -9,7 +9,9 @@ const getProducts = async (req, res) => {
     // const books = await Book.find();
     // res.json(books);
 
-    const products = await Product.find({});
+    // const products = await Product.find({});
+    const products = await Product.find({},{ pdfBuffer: 0,createdAt: 0,updatedAt: 0}).sort({ bookName: -1 });
+    console.log(products, "productss")
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -76,17 +78,18 @@ const createProduct = async (req, res) => {
     const filePath = file.path;
     const fileData = fs.readFileSync(filePath); // Read file from local storage
 
+    const resp = await uploadBook({ filePath, bookName, authorName });
+
     // Create and save the product in MongoDB
     const newProduct = new Product({
       bookName,
       authorName,
       pdfBuffer: fileData, // Save file as binary data (Buffer) in MongoDB
-      pdfPath: filePath // Save the file path where it's stored locally
+      pdfPath: filePath, // Save the file path where it's stored locally
+      totalPages : resp.totalPages
     });
 
     await newProduct.save();
-
-    const resp = await uploadBook({ filePath, bookName, authorName });
 
     console.log(resp, " --------------------====================== resp ======================-------------------- ");
 
@@ -137,3 +140,4 @@ module.exports = {
   updateProduct,
   deleteProduct,
 };
+

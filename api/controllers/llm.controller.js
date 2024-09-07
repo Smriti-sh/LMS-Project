@@ -23,11 +23,11 @@ const client = weaviate.client({
   apiKey: new weaviate.ApiKey('3I2jRBj9Wq8I2tVPN3nkTudvxdULv86eXHqh'),
 });
 
-const addDocs = async (data, storeInExistingIndex=false) => {
+const addDocs = async (data, storeInNewIndex=false) => {
   try {
     const { documents } = data;
 
-    if (storeInExistingIndex) {
+    if (storeInNewIndex) {
       // Create a store and fill it with some texts + metadata
       const resp = await WeaviateStore.fromDocuments(
         documents,
@@ -38,7 +38,7 @@ const addDocs = async (data, storeInExistingIndex=false) => {
           client,
           indexName: 'LMS',
           textKey: 'text',
-          metadataKeys: ['bookName', 'author'],
+          metadataKeys: ['bookName', 'authorName'],
         }
       );
 
@@ -98,7 +98,7 @@ const readPdf = async (filePath, data) => {
       // Split the documents into smaller chunks
       const splitter = new RecursiveCharacterTextSplitter({
         chunkSize: 1000,
-        chunkOverlap: 0,
+        chunkOverlap: 10,
       });
       const splittedDocs = await splitter.splitDocuments(docs);
 

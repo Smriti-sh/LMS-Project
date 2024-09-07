@@ -6,7 +6,7 @@ import { DrawerComponent } from './drawer/drawer.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'books',
     component: BooksComponent,
     children: [{
       path: 'add',

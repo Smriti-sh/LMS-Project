@@ -3,8 +3,6 @@
     flex-direction: row;
     justify-content: space-evenly;
     margin-bottom: 35px;
-    
-
 }
 
 .two{
@@ -80,4 +78,10 @@
 
 .mdc-notched-outline__leading {
     border-color: #026e78 !important;
+}
+
+
+::ng-deep .mdc-text-field--filled{
+height: 56px;
+border-radius: var(--mdc-filled-text-field-container-shape) !important;
 }
