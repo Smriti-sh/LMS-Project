@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+// const mongoosePaginate = require('mongoose-paginate-v2');
 const Product = require("./models/product.model.js");
 const productRoute = require("./routes/product.route.js");
 const llmRoute = require("./routes/llm.route.js");
@@ -8,6 +9,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
+
+// mongoose.Promise = global.Promise;
 
 // middleware
 app.use(bodyParser.json());
@@ -29,6 +32,10 @@ app.use(express.urlencoded({ extended: false }));
 // app.listen(3001, () => {
 //   console.log('Server is running on http://localhost:3001');
 // });
+
+Product.paginate(query, options)
+        .then(result => {})
+        .catch(error => {});
 
 
 // routes

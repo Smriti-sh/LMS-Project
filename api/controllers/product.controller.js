@@ -6,10 +6,7 @@ const { uploadBook } = require('./llm.controller');
 
 const getProducts = async (req, res) => {
   try {
-    // const books = await Book.find();
-    // res.json(books);
 
-    // const products = await Product.find({});
     const products = await Product.find({},{ pdfBuffer: 0,createdAt: 0,updatedAt: 0}).sort({ bookName: -1 });
     console.log(products, "productss")
     res.status(200).json(products);
@@ -20,8 +17,6 @@ const getProducts = async (req, res) => {
 
 const getProduct = async (req, res) => {
   try {
-    // const books = await Book.find();
-    // res.json(books);
 
     const { id } = req.params;
     const product = await Product.findById(id);
@@ -132,6 +127,10 @@ const deleteProduct = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Product.paginate(query, options)
+//         .then(result => {})
+//         .catch(error => {});
 
 module.exports = {
   getProducts,
