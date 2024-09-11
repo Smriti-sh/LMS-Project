@@ -2,6 +2,6 @@ export interface Table{
     num: number,
     name: string,
     author: string,
-    pages?: number
+    pages?: number,
     totalPages:number
 }

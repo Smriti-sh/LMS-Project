@@ -6,10 +6,19 @@ const { uploadBook } = require('./llm.controller');
 
 const getProducts = async (req, res) => {
   try {
+    console.log("get req data",req);
 
-    const products = await Product.find({},{ pdfBuffer: 0,createdAt: 0,updatedAt: 0}).sort({ bookName: -1 });
-    console.log(products, "productss")
-    res.status(200).json(products);
+    const {limit, skip, sort} = req.query;
+
+    //projection
+    const products = await Product.find({},{ pdfBuffer: 0,createdAt: 0,updatedAt: 0}).sort({ bookName: 1}).skip(skip).limit(limit) ;
+    const totalCount =  await Product.countDocuments();
+
+    console.log("paginated data",products);
+
+    // res.status(200).json(products); //The paginated list of products that was sliced from the array.
+    res.json({totalCount, products});
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

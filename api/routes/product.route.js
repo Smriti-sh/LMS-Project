@@ -4,7 +4,7 @@ const router = express.Router();
 const {getProducts, getProduct, createProduct, updateProduct, deleteProduct} = require('../controllers/product.controller.js');
 
 
-router.get('/', getProducts);
+router.get('/list', getProducts);
 router.get("/:id", getProduct);
 
 router.post("/upload", createProduct);

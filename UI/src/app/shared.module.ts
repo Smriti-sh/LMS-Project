@@ -47,11 +47,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { ToastrModule } from "ngx-toastr";
-
+import { MatPaginator,PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @NgModule({
     imports: [
         //Common Modules
+        MatPaginator,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,

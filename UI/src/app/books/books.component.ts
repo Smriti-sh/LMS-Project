@@ -1,7 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { MatPaginator,MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator,MatPaginatorModule,PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource,MatTableModule } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
@@ -14,17 +15,21 @@ import { Table } from '../../models/Table';
   styleUrl: './books.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush // Enable OnPush strategy for better performance
 })
-export class BooksComponent implements OnInit, OnDestroy {
+export class BooksComponent implements OnInit,AfterViewInit, OnDestroy, OnChanges {
 
   displayColumn: string[] = ['num', 'bookName', 'authorName', 'pages'];
-  dataSource: Table[] = [];
+  dataSource = new MatTableDataSource<Table>([]);
 
-  private unsubscribe$ = new Subject<void>(); // To manage unsubscriptions
+  page: number = 0;
+  limit:number =10;
+  skip: number = 0; 
+  // sortNum: string = 'asc';  
+
+  private unsubscribe$ = new Subject<void>();   // To manage unsubscriptions
 
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort;
   @ViewChild('matDrawer', { static: true }) matDrawer?: MatDrawer;
-
 
   drawerMode: 'side' | 'over' = 'over';
 
@@ -39,24 +44,54 @@ export class BooksComponent implements OnInit, OnDestroy {
     this.getMethod();
   }
 
+  //Logs changes related to the paginator whenever Angular detects changes to input properties.
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.paginator, " ---- this.paginator ---- ")
+  }
+
+  ngAfterViewInit() {
+    
+    console.log(this.paginator, "this.paginator")
+    if (this.paginator) {
+      const { length, pageIndex, pageSize} = this.paginator
+      console.log(length, "this.paginator", pageIndex, "pageIndex", pageSize, "pageSize");
+      this.paginator.length = 0;
+      this.dataSource.paginator = this.paginator;
+    } 
+  }
+
   ngOnDestroy(): void {
     // Unsubscribe to avoid memory leaks
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
-  // Method to update books list from another component
-  updateBooksList(newBook: Table): void {
-    this.dataSource = [...this.dataSource, newBook]; // Use immutability for change detection to work properly
-    this.changeDetectorRef.markForCheck(); // Mark for check in case of OnPush strategy
+  //Placeholder method that logs pagination events when triggered (e.g., when the user clicks "Next" or "Previous"). This is where logic for handling pagination events can be implemented.
+  public handlePageEvent(event: any){
+    console.log(event, "event", this.paginator );
+    const {pageSize, pageIndex,}=event;
+    this.limit = pageSize;
+    this.page = pageIndex;
+    this.skip = (this.page*this.limit);
+    this.getMethod();
   }
-
+  
   public getMethod(): void {
-    this.http.get<Table[]>('http://localhost:3000/api/products/')
-      .pipe(takeUntil(this.unsubscribe$)) // Unsubscribe on component destruction
-      .subscribe(data => {
-        this.dataSource = data;
+    
+    this.http.get<any>(`http://localhost:3000/api/products/list?limit=${this.limit}&skip=${this.skip}`)
+      .pipe(takeUntil(this.unsubscribe$))   //  automatically Unsubscribe on component destruction // You use the takeUntil(this.unsubscribe$) operator to tell Angular that once the unsubscribe$ subject emits a value, any active subscriptions should automatically unsubscribe.
+      .subscribe(res => {
+
+        console.log("data view",res.products);
+        console.log("Count view",res.totalCount);
+        
+        this.dataSource = res.products;
+
         this.changeDetectorRef.markForCheck(); // Mark for change detection
+        if (this.paginator) {
+          this.paginator.length = res.totalCount;
+          this.dataSource.paginator = this.paginator;
+        } 
       });
   }
 

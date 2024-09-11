@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-// const mongoosePaginate = require('mongoose-paginate-v2');
 const Product = require("./models/product.model.js");
 const productRoute = require("./routes/product.route.js");
 const llmRoute = require("./routes/llm.route.js");
@@ -18,30 +17,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
-// Configure multer for file uploads
-// const upload = multer({ dest: 'uploads/' });
-
-// app.post('/api/products/', upload.single('pdfFile'), (req, res) => {
-//   console.log(req.file); // File information
-//   console.log(req.body); // Other form data
-
-//   res.send({ message: 'File uploaded successfully' });
-// });
-
-// app.listen(3001, () => {
-//   console.log('Server is running on http://localhost:3001');
-// });
-
-Product.paginate(query, options)
-        .then(result => {})
-        .catch(error => {});
-
-
+// Product.paginate(query, options)
+//         .then(result => {})
+//         .catch(error => {});
 // routes
 app.use("/api/products", productRoute);
 
 app.use("/api/llm", llmRoute);
+
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*"); //allows requests from any origin (domain), which is useful for enabling access from other domains.
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); //specifies which headers are allowed in incoming requests.
+//   next();
+// });
 
 app.get("/", (req, res) => {
   res.send("Hello from Node API Server Updated");
@@ -50,8 +38,7 @@ app.get("/", (req, res) => {
 
 mongoose
   .connect(
-    "mongodb+srv://admin:123abc456@cluster0.zuaefuo.mongodb.net/Node-API?retryWrites=true&w=majority&appName=Cluster0"
-  )
+    "mongodb+srv://admin:123abc456@cluster0.zuaefuo.mongodb.net/Node-API?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => {
     console.log("Connected to database!");
     app.listen(3000, () => {

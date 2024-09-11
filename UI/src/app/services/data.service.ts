@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs';
+import { HttpClient} from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Table } from '../../models/Table';
 
 @Injectable({
@@ -18,7 +17,7 @@ export class DataService {
   // }
 
   getBooks(): Observable<Table[]> {
-    return this.http.get<Table []>('http://localhost:3000/api/products');
+    return this.http.get<Table[]>('http://localhost:3000/api/products');
   }
 }
 
