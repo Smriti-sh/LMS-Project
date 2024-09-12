@@ -15,7 +15,7 @@ import { Table } from '../../models/Table';
   styleUrl: './books.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush // Enable OnPush strategy for better performance
 })
-export class BooksComponent implements OnInit,AfterViewInit, OnDestroy, OnChanges {
+export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
 
   displayColumn: string[] = ['num', 'bookName', 'authorName', 'pages'];
   dataSource = new MatTableDataSource<Table>([]);
@@ -41,23 +41,10 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy, OnChange
   ) { }
 
   ngOnInit(): void {
-    this.getMethod();
-  }
-
-  //Logs changes related to the paginator whenever Angular detects changes to input properties.
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.paginator, " ---- this.paginator ---- ")
   }
 
   ngAfterViewInit() {
-    
-    console.log(this.paginator, "this.paginator")
-    if (this.paginator) {
-      const { length, pageIndex, pageSize} = this.paginator
-      console.log(length, "this.paginator", pageIndex, "pageIndex", pageSize, "pageSize");
-      this.paginator.length = 0;
-      this.dataSource.paginator = this.paginator;
-    } 
+    this.getMethod();
   }
 
   ngOnDestroy(): void {
@@ -86,12 +73,12 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy, OnChange
         console.log("Count view",res.totalCount);
         
         this.dataSource = res.products;
-
-        this.changeDetectorRef.markForCheck(); // Mark for change detection
+        
         if (this.paginator) {
           this.paginator.length = res.totalCount;
           this.dataSource.paginator = this.paginator;
         } 
+        this.changeDetectorRef.markForCheck(); // Mark for change detection
       });
   }
 
