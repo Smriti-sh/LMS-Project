@@ -7,7 +7,7 @@ const { uploadBook } = require('./llm.controller');
 const getProducts = async (req, res) => {
   try {
     console.log("get req data",req);
-
+    
     const {limit, skip, sort} = req.query;
 
     //projection
