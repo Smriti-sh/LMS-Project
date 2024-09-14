@@ -7,7 +7,6 @@
 }
 
 table{
-    margin-top: 20px;
     width: 80% !important;
 }
 
@@ -52,8 +51,8 @@ th,td{
 }
 
   .table-container{
-    max-height: 680px; 
-    overflow-y: auto;
+    /* max-height: 680px;  */
+    /* overflow-y: auto; */
   }
 
   mat-header-row {

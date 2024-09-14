@@ -1,4 +1,4 @@
-<div class="w-full h-full">
+<div class="w-full">
   <mat-drawer-container class="flex-auto w-full h-full">
     <!-- Drawer -->
     <mat-drawer class="h-full dark:bg-gray-900" [mode]="drawerMode" [opened]="false" [position]="'end'"
@@ -7,7 +7,7 @@
     </mat-drawer>
 
     <!--  Drawer  Content -->
-    <mat-drawer-content class="h-full">
+    <mat-drawer-content style="height: calc(100vh - 100px);">
       <div class="flex flex-col bg-dark text-white w-full" style="height: calc(100%);">
         <div class="flex flex-row justify-end mr-2" style="margin-right: 2%; margin-top: 2%;">
           <button mat-flat-button (click)="openDrawer()">
@@ -16,36 +16,38 @@
           </button>
         </div>
 
-        <div class="h-full flex flex-col table-container" style="margin-left: 2%; margin-right: 2%;">
-          <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8 tbl">
-            <ng-container matColumnDef="id">
-              <th mat-header-cell *matHeaderCellDef > No. </th>
-              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-            </ng-container>
-            <ng-container matColumnDef="num">
-              <th mat-header-cell *matHeaderCellDef > # </th>
-              <td mat-cell *matCellDef="let element;  let i = index"> {{i+1}}</td>
-            </ng-container>
-            <ng-container matColumnDef="bookName">
-              <th mat-header-cell *matHeaderCellDef > Name </th>
-              <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="authorName">
-              <th mat-header-cell *matHeaderCellDef > Author </th>
-              <td mat-cell *matCellDef="let element"> {{element.authorName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="pages">
-              <th mat-header-cell *matHeaderCellDef > No. of Pages </th>
-              <td mat-cell *matCellDef="let element"> {{element.totalPages}} </td>
-            </ng-container>
+        <div class="flex flex-col table-container" style="margin: 2%; height: calc(82vh - 50px); overflow: hidden;">
+          <div style="height: calc(82vh - 60px); overflow-y: auto;">
+            <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8 tbl">
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef > No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+              </ng-container>
+              <ng-container matColumnDef="num">
+                <th mat-header-cell *matHeaderCellDef > # </th>
+                <td mat-cell *matCellDef="let element;  let i = index"> {{i+1}}</td>
+              </ng-container>
+              <ng-container matColumnDef="bookName">
+                <th mat-header-cell *matHeaderCellDef > Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
+              </ng-container>
+              <ng-container matColumnDef="authorName">
+                <th mat-header-cell *matHeaderCellDef > Author </th>
+                <td mat-cell *matCellDef="let element"> {{element.authorName}} </td>
+              </ng-container>
+              <ng-container matColumnDef="pages">
+                <th mat-header-cell *matHeaderCellDef > No. of Pages </th>
+                <td mat-cell *matCellDef="let element"> {{element.totalPages}} </td>
+              </ng-container>
 
-            <!-- totalPages: docs.length, -->
+              <!-- totalPages: docs.length, -->
 
-            <tr mat-header-row *matHeaderRowDef="displayColumn; sticky: true" class="text-white text-md bg-primary w-[10%]"></tr>
-            <tr mat-row *matRowDef="let row; let even = even; let odd = odd;
-                    columns: displayColumn;" [ngClass]="{gray: even, blue:odd}" ></tr>
-            
-          </table>
+              <tr mat-header-row *matHeaderRowDef="displayColumn; sticky: true" class="text-white text-md bg-primary w-[10%]"></tr>
+              <tr mat-row *matRowDef="let row; let even = even; let odd = odd;
+                      columns: displayColumn;" [ngClass]="{gray: even, blue:odd}" ></tr>
+
+            </table>
+          </div>
           <mat-paginator [pageSizeOptions]="[10,20,30,40,50]" showFirstLastButtons (page)="handlePageEvent($event)"
               aria-label="Select page of periodic elements">
             </mat-paginator>
