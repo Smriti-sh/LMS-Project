@@ -49,10 +49,10 @@ queryForm: FormGroup = new FormGroup({
 
   onSubmit(): void {
     if (this.queryForm.valid) {
-      const queryData = new FormData();
-      queryData.append('query', this.queryForm.get('query')?.value);
-      // queryData.append('queNum', this.queryForm.get('num')?.value);
-      // queyData.append('bookName', this.queryForm.get('bookName')?.value);
+      const queryData = {
+        query: this.queryForm.get('query')?.value
+      };
+
       this.isApiCalling = true;
       this.http.post('http://localhost:3000/api/llm/query', queryData).subscribe(
         res => {
