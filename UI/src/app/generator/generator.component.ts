@@ -14,24 +14,25 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './generator.component.html',
   styleUrl: './generator.component.css'
 })
-export class GeneratorComponent implements OnInit{
+export class GeneratorComponent implements OnInit {
 
-queryForm: FormGroup = new FormGroup({
+  queryForm: FormGroup = new FormGroup({
     query: new FormControl('', [Validators.required]),
-    // num: new FormControl('', [Validators.required]),
-    // bookName: new FormControl('', [Validators.required]),
+    queNum: new FormControl('', []),
+    bookName: new FormControl('', []),
+    answerFormat: new FormControl('', []),
   });
   isApiCalling = false;
 
 
-  formats: Format[]=[
+  formats: Format[] = [
     {
-      'id':1,
-      'value':'Paragraph'
+      'id': 1,
+      'value': 'Paragraph'
     },
     {
-      'id':2,
-      'value':'Bullets'
+      'id': 2,
+      'value': 'Bullets'
     }
   ]
 
@@ -39,9 +40,9 @@ queryForm: FormGroup = new FormGroup({
     private router: Router,
     private http: HttpClient,
     private toastr: ToastrService
-  ){}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   resetForm(): void {
     this.queryForm.reset();
@@ -49,8 +50,9 @@ queryForm: FormGroup = new FormGroup({
 
   onSubmit(): void {
     if (this.queryForm.valid) {
+
       const queryData = {
-        query: this.queryForm.get('query')?.value
+        ...this.queryForm.value
       };
 
       this.isApiCalling = true;
@@ -65,10 +67,10 @@ queryForm: FormGroup = new FormGroup({
         },
         () => this.isApiCalling = false
       );
-     }else {
+    } else {
       this.toastr.error('Form is invalid or no file selected.');
     }
-}
+  }
 
 }
 

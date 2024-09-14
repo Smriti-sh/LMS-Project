@@ -1,57 +1,55 @@
- <mat-card class="container" style="margin-left: 2%; margin-right: 2%;">
+<mat-card class="container" style="margin-left: 2%; margin-right: 2%;">
 
-        <mat-card-content class="box1">
+  <mat-card-content class="box1">
 
-        <form [formGroup]="queryForm">
+    <form [formGroup]="queryForm">
 
-          <div class="box2">
+      <div class="box2">
 
-            <mat-form-field appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
-              <input formControlName="query" type="text" matInput  placeholder="Enter your topic..." focus />
-            </mat-form-field>
+        <mat-form-field appearance="fill" style="margin-top: 10px; width: 95%; margin-left: 2.5%;">
+          <input formControlName="query" type="text" matInput placeholder="Enter your topic..." focus />
+        </mat-form-field>
 
-          </div>
+      </div>
 
-                <div class="one h-full">
+      <div class="one h-full">
 
-                  <mat-form-field appearance="outline" class="fields-">
-                    <mat-label>Format</mat-label>
-                    <mat-select formControlName="query">
-                      @for (format of formats; track format) {
-                        <mat-option [value]="format.value">{{format.value}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
+        <mat-form-field appearance="outline" class="fields-">
+          <mat-label>Format</mat-label>
+          <mat-select formControlName="answerFormat">
+            @for (format of formats; track format) {
+            <mat-option [value]="format.value">{{format.value}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-                  <mat-form-field appearance="outline" class="field-border-radius">
-                    <mat-label>No. of Questions</mat-label>
-                    <!-- <input formControlName="queNum" matInput type="number" min="0" max="50" required > -->
-                    <input matInput type="number" min="0" max="50" required >
-                  </mat-form-field>
+        <mat-form-field appearance="outline" class="field-border-radius">
+          <mat-label>No. of Questions</mat-label>
+          <input matInput formControlName="queNum" type="number" min="0" max="50">
+        </mat-form-field>
 
-                  <mat-form-field appearance="outline" class="fields">
-                    <mat-label>Name of Book</mat-label>
-                    <!-- <mat-select formControlName="bookName"> -->
-                      <mat-select formControlName="bookName">
-                      @for (format of formats; track format) {
-                        <mat-option [value]="format.value">{{format.value}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+        <mat-form-field appearance="outline" class="fields">
+          <mat-label>Name of Book</mat-label>
+          <mat-select formControlName="bookName">
+            @for (format of formats; track format) {
+            <mat-option [value]="format.value">{{format.value}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-              <div class="box3">
-                <button mat-button class="btn" type="submit" [disabled]="queryForm.invalid" (click)="onSubmit()">Ask Query</button>
-              </div>
+      <div class="box3">
+        <button mat-button class="btn" type="submit" [disabled]="queryForm.invalid" (click)="onSubmit()">Ask
+          Query</button>
+      </div>
 
-            </form>
-        </mat-card-content>
-      </mat-card>
+    </form>
+  </mat-card-content>
+</mat-card>
 
 
 <!-- <mat-card class="container2" style="margin-left: 2%; margin-right: 2%;">
-<mat-card-content class="ans">  
+<mat-card-content class="ans">
 
 </mat-card-content>
 </mat-card> -->
-
