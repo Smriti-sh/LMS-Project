@@ -6,13 +6,15 @@
 
       <div class="box2">
         <mat-form-field appearance="fill" style="margin-top: 10px; width: 90%; margin: 0 auto; padding: 2px;">
-          <textarea rows="1" cols="60" 
+          <textarea 
+              style="height: 30px;"
               formControlName="query" 
               type="text" 
               matInput 
-              placeholder="Enter your topic..." 
+              placeholder="Enter your query..." 
               focus (input)="capitalizeText()"
               [(ngModel)]="queryText" ></textarea>
+
             <mat-error *ngIf="queryForm.controls['username']">
               Username is required
             </mat-error>
@@ -34,7 +36,7 @@
         <mat-form-field appearance="fill" class="field-border-radius" *ngIf="!showQue" style="cursor: pointer;
         min-width: 8rem;">
           <mat-label>Word Limit</mat-label>
-          <input matInput  >
+          <input matInput  formControlName="wordLimit">
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="field-border-radius" *ngIf="showQue" tyle="cursor: pointer;
@@ -42,15 +44,6 @@
           <mat-label>No. of Questions</mat-label>
           <input matInput formControlName="queNum" type="number" min="0" max="15" placeholder="eg. 5">
         </mat-form-field>
-
-        <!-- <mat-form-field appearance="outline" class="fields">
-          <mat-label>Name of Book</mat-label>
-          <mat-select formControlName="bookName">
-            @for (format of formats; track format) {
-            <mat-option [value]="format.value">{{format.value}}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field> -->
       </div>
 
       <div class="box3">
@@ -73,7 +66,9 @@
       </div>
     </div>
 
-    <div class="ans" [innerHTML]="response?.answer" #textInput>
+    <div class="ans" [innerHTML]="response?.answer" #textInput  [innerHTML]="formattedAnswer">
+      <div ></div>
+
     </div>
 
   </mat-card-content>

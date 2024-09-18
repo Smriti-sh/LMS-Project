@@ -206,7 +206,7 @@ li::marker {
     background-color: #0f172a
 } */
 .bg-dark {
-    background-color: #f5f6f8
+    background-color: white;
 }
 
 .justify-end {
