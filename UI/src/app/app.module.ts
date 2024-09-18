@@ -29,9 +29,13 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSidenavModule } from '@angular/material/sidenav';
-// import { FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { format } from 'path';
+// import { NgxKatexModule } from 'ng-katex';
 
-@NgModule({
+@NgModule({   //metadata for the module
+
+  //array of components, directives, and pipes
   declarations: [
     DndDirective,
     AppComponent,
@@ -39,9 +43,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     GeneratorComponent,
     DrawerComponent
   ],
+
+  // array contains modules that your module is dependent on
   imports: [
-    // FormBuilder,
-    // FormGroup,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     MatCardModule,

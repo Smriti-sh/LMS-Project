@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     margin-bottom: 35px;
-    margin: 0 15rem;
+    margin: 0 22rem;
     margin-bottom: 30px;
     margin-top: 30px;
 }
@@ -21,15 +21,13 @@
 }
 
 .box1{
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .container{
-    /* background-color: rgb(94, 114, 141); */
-    /* background-image: linear-gradient(to right, rgba(27, 35, 74, 0.529), rgba(21, 36, 52, 0.989)); */
     background-color: #1f273c;
     display: flex;
     flex-direction: column;
@@ -37,31 +35,24 @@
     padding-top: 40px;
     width: 95%;
     margin-top: 50px;
-
-    /* box-shadow: 0px 0px 10px 0px #888686,
-        0 1px 1px 0 #8a8a8a,
-        0 1px 3px 0 #9b9b9b; */
 }
 
-/* .fields{
-    background-color: rgb(35, 42, 75);
-} */
-
 .btn{
-    background-color: rgb(212, 213, 214);
-    padding: 15px;
+    background-color: rgb(198, 199, 200);
+    padding: 20px;
     font-size: 15px;
-    font-weight: 600;
-    border: 2px solid transparent;
-    transition: all 0.4s ease;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.1s ease;
     cursor: pointer;
     border-radius: 5px;
 }
 .btn:hover{
-    transform: translateZ(-5px);
-    border: 2px solid #0F172A;
-    background: transparent;
-    color:#888686;
+    /* transform: translateZ(-5px); */
+    /* border: 2px solid #0F172A; */
+    font-weight: 400;
+    background-color: #10172a;
+    color:#c4c2c2;
 }
 
 .box2{
@@ -97,14 +88,117 @@ border-radius: var(--mdc-filled-text-field-container-shape) !important;
 
 .ans{
     border-radius: 8px;
-    height: 50px;
+    /* height: 1rem; */
     background-color: #0F172A;
-    overflow: auto;
-    width: 90%;
+    color: rgb(205, 202, 202);
+    font-weight: 300;
+    /* overflow: auto; */
+    width: 85%;
     margin: 0 auto;
+    padding: 28px;
 }
 
 .answerBox{
     margin-top: 40px;
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
 }
+
+.icons{
+    flex-direction: row;
+    color: rgb(218, 217, 217);
+    display: flex;
+    width: 94%;
+    margin-bottom: 15px;
+    justify-content: flex-end;
+    height: 28px;
+}
+
+.loader {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+    margin: 15px auto;
+    position: relative;
+    color: #FFF;
+    left: -100px;
+    box-sizing: border-box;
+    animation: shadowRolling 2s linear infinite;
+  }
+  
+  @keyframes shadowRolling {
+    0% {
+      box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+    }
+    12% {
+      box-shadow: 100px 0 white, 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+    }
+    25% {
+      box-shadow: 110px 0 white, 100px 0 white, 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+    }
+    36% {
+      box-shadow: 120px 0 white, 110px 0 white, 100px 0 white, 0px 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+      box-shadow: 130px 0 white, 120px 0 white, 110px 0 white, 100px 0 white;
+    }
+    62% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 130px 0 white, 120px 0 white, 110px 0 white;
+    }
+    75% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 130px 0 white, 120px 0 white;
+    }
+    87% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 130px 0 white;
+    }
+    100% {
+      box-shadow: 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0);
+    }
+  }
+
+  .copyIcon{
+    background-color: transparent;
+    cursor: pointer;
+    color: #c9cacc;
+    border: none;
+    padding: 5px;
+  }
+  .copyIcon:hover{
+    color: #9a9b9c;
+    /* background-color: #36405c; */
+    /* border-radius: 5px; */
+    padding: 5px;
+  }
+
+.mat-mdc-text-field-wrapper{
+  background-color: green;
+}
+
+::ng-deep .mat-mdc-form-field:not(.mat-form-field-disabled) .mat-mdc-floating-label.mdc-floating-label {
+  cursor: inherit;
+  color: white;
+}
+
+
+::ng-deep .mat-mdc-select-value-text {
+  color: rgb(225, 225, 225);
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important;
+}
+
+
+::ng-deep .mdc-text-field--no-label:not(.mdc-text-field--textarea) .mat-mdc-form-field-input-control.mdc-text-field__input, .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+  color: rgb(225, 225, 225);
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: rgb(225, 225, 225) !important;
+}
+
+/* ::ng-deep .ng-tns-c2400808035-2{ */
+  /* color: grey; */
+/* } */

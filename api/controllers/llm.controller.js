@@ -185,24 +185,24 @@ queryChain = async (req, res) => {
       const completionText = answer.text;
 
       if (completionText) {
-        res.status(200).json({
+        return res.status(200).json({
           status: true,
           query: prompt,
           answer: completionText
         });
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         status: false,
         query: prompt,
         message: 'something went wrong!'
       });
     }
 
-    res.status(400).json({ message: 'Invalid payload!' });
+    return  res.status(400).json({ message: 'Invalid payload!' });
   } catch (err) {
     console.log(err, " ---------------- Error ---------------- ");
-    res.status(400).json(err);
+    return res.status(400).json(err);
   }
 };
 

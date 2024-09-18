@@ -62,7 +62,7 @@ export class DrawerComponent implements OnInit, OnDestroy {
         },
         error => {
           console.error('Error adding book:', error);
-          this.toastr.error('There was an error!');
+          this.toastr.error( error.error.message ||'There was an error!');
         },
         () => this.isApiCalling = false
       );

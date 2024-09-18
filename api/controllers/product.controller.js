@@ -7,7 +7,7 @@ const { uploadBook } = require('./llm.controller');
 const getProducts = async (req, res) => {
   try {
     console.log("get req data",req);
-    
+
     const {limit, skip, sort} = req.query;
 
     //projection
@@ -71,6 +71,13 @@ const createProduct = async (req, res) => {
     if (!bookName || !authorName) {
       return res.status(400).json({ message: 'Book name and author name are required' });
     }
+    
+    //testing for duplicate
+    const exist = await Product.findOne({bookName: bookName}, {id: 1, bookName: 1});
+    console.log(exist,"exist");
+    if (exist) {
+      return res.status(400).json({ message: "This book already exists." });
+    }
 
     // Handle file upload
     const file = req.file;
@@ -81,6 +88,7 @@ const createProduct = async (req, res) => {
     // Read file contents as binary data (Buffer)
     const filePath = file.path;
     const fileData = fs.readFileSync(filePath); // Read file from local storage
+
 
     const resp = await uploadBook({ filePath, bookName, authorName });
 

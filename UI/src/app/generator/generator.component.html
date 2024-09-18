@@ -5,51 +5,75 @@
     <form [formGroup]="queryForm">
 
       <div class="box2">
-
-        <mat-form-field appearance="fill" style="margin-top: 10px; width: 90%; margin: 0 auto;">
-          <input formControlName="query" type="text" matInput placeholder="Enter your topic..." focus />
+        <mat-form-field appearance="fill" style="margin-top: 10px; width: 90%; margin: 0 auto; padding: 2px;">
+          <textarea rows="1" cols="60" 
+              formControlName="query" 
+              type="text" 
+              matInput 
+              placeholder="Enter your topic..." 
+              focus (input)="capitalizeText()"
+              [(ngModel)]="queryText" ></textarea>
+            <mat-error *ngIf="queryForm.controls['username']">
+              Username is required
+            </mat-error>
         </mat-form-field>
-
       </div>
 
       <div class="one h-full">
 
-        <mat-form-field appearance="outline" class="fields-">
+        <mat-form-field appearance="fill" class="fields-" style="cursor: pointer;
+        min-width: 8rem;">
           <mat-label>Format</mat-label>
-          <mat-select formControlName="answerFormat">
+          <mat-select formControlName="answerFormat" (selectionChange)="onFormatChange($event)">
             @for (format of formats; track format) {
             <mat-option [value]="format.value">{{format.value}}</mat-option>
             }
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="field-border-radius">
-          <mat-label>No. of Questions</mat-label>
-          <input matInput formControlName="queNum" type="number" min="0" max="50">
+        <mat-form-field appearance="fill" class="field-border-radius" *ngIf="!showQue" style="cursor: pointer;
+        min-width: 8rem;">
+          <mat-label>Word Limit</mat-label>
+          <input matInput  >
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="fields">
+        <mat-form-field appearance="fill" class="field-border-radius" *ngIf="showQue" tyle="cursor: pointer;
+        min-width: 8rem;">
+          <mat-label>No. of Questions</mat-label>
+          <input matInput formControlName="queNum" type="number" min="0" max="15" placeholder="eg. 5">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline" class="fields">
           <mat-label>Name of Book</mat-label>
           <mat-select formControlName="bookName">
             @for (format of formats; track format) {
             <mat-option [value]="format.value">{{format.value}}</mat-option>
             }
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
 
       <div class="box3">
-        <button mat-button class="btn" type="submit" [disabled]="queryForm.invalid" (click)="onSubmit()">Ask
-          Query</button>
+        <span class="loader" *ngIf="isApiCalling"></span>
+        <button mat-button *ngIf="!isApiCalling" class="btn" type="submit" [disabled]="queryForm.invalid" (click)="onSubmit()">
+          <span>Ask Query</span>
+        </button>
       </div>
 
     </form>
   </mat-card-content>
 
-  <mat-card-content class="answerBox">
+  <mat-card-content class="answerBox" *ngIf="response?.answer">
 
-    <div class="ans">
+    <div class="icons">
+      <div>
+        <button (click)="copyText()" class="copyIcon">
+        <mat-icon  style="cursor: pointer;">file_copy</mat-icon>
+      </button>
+      </div>
+    </div>
 
+    <div class="ans" [innerHTML]="response?.answer" #textInput>
     </div>
 
   </mat-card-content>
