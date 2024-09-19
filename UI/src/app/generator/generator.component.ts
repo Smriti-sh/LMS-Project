@@ -1,6 +1,5 @@
 import { Component, OnInit , ElementRef,ViewChild} from '@angular/core';
 import { Format } from '../../models/Format';
-// import { Route } from '@angular/router';
 import { Routes } from '@angular/router';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -28,7 +27,6 @@ export class GeneratorComponent implements OnInit {
     query: new FormControl('', [Validators.required, Validators.minLength(3), NameValidator.noExtraSpaces]),
     wordLimit: new FormControl('',[]),
     queNum: new FormControl('', []),
-    // bookName: new FormControl('', []),
     answerFormat: new FormControl('', [])
   });
   isApiCalling = false;
@@ -117,10 +115,10 @@ export class GeneratorComponent implements OnInit {
         (res:any) => {
           if (res && res.answer) {
             this.response = res;
-            this.formattedAnswer = this.response.answer.replace(/\n/g, '<br>');
+            this.formattedAnswer = this.response.answer.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
           } else{
             this.response = {};
-            this.formattedAnswer = this.response.answer.replace(/\n/g, '<br>');
+            this.formattedAnswer = this.response.answer.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
           }
           console.log('Query entered succesfully', res);
           this.resetForm();
