@@ -15,8 +15,7 @@
             Add Books
           </button>
         </div>
-
-        <div class="flex flex-col table-container" style="margin: 2%; height: calc(82vh - 50px); overflow: hidden;">
+        <div class="flex flex-col table-container" style="margin: 2%; height: calc(82vh - 50px); overflow: hidden;" *ngIf="isDataAvailable; else noProducts">
           <div style="height: calc(82vh - 60px); overflow-y: auto;">
             <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8 tbl">
               <ng-container matColumnDef="id">
@@ -52,6 +51,14 @@
               aria-label="Select page of periodic elements">
             </mat-paginator>
         </div>
+
+        <ng-template #noProducts>
+          <div style="margin: 2%; height: calc(82vh - 50px); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <p style="color: black;">Your book entry is empty</p>
+              <img cImg src="../../assets/img/anya.jpg" alt="empty page" width="200" height="200"/>
+          </div>
+        </ng-template>
+
       </div>
     </mat-drawer-content>
   </mat-drawer-container>

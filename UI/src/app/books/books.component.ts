@@ -31,6 +31,7 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
   @ViewChild(MatSort) sort?: MatSort;
   @ViewChild('matDrawer', { static: true }) matDrawer?: MatDrawer;
 
+  isDataAvailable:boolean=false;
   drawerMode: 'side' | 'over' = 'over';
 
   constructor(
@@ -70,12 +71,17 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
       .subscribe(res => {
 
         console.log("data view",res.products);
-        console.log("Count view",res.totalCount);
+        console.log("Count view",this.paginator);
         
         this.dataSource = res.products;
+
+        if(res.totalCount){
+          this.isDataAvailable = true;
+        }
         
         if (this.paginator) {
           this.paginator.length = res.totalCount;
+          console.log(this.paginator.length, "this.paginator.length")
           this.dataSource.paginator = this.paginator;
         } 
         this.changeDetectorRef.markForCheck(); // Mark for change detection

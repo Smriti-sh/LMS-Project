@@ -1,6 +1,7 @@
 const { OpenAIEmbeddings } = require('@langchain/openai');
 const { RetrievalQAChain } = require('langchain/chains');
 const { ChatOpenAI } = require('@langchain/openai');
+const Records = require('../models/records.model');
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const WEAVIATE_SCHEME = process.env.WEAVIATE_SCHEME;
@@ -16,6 +17,7 @@ const { default: weaviate } = require('weaviate-ts-client');
 const { WeaviateStore } = require('@langchain/weaviate');
 const { performance } = require('perf_hooks');
 const fs = require('fs');
+const { query } = require('express');
 
 const client = weaviate.client({
   scheme: 'https',
@@ -183,6 +185,14 @@ queryChain = async (req, res) => {
       console.log(`Execution time: ${executionTime} milliseconds`);
 
       const completionText = answer.text;
+
+      //TODO insert query and response in DB
+      const saveRecords = new Records({
+        query,
+        answer:answer.text
+      });
+      await saveRecords.save();
+
 
       if (completionText) {
         return res.status(200).json({

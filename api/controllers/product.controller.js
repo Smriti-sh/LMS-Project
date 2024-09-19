@@ -1,4 +1,5 @@
 const Product = require("../models/product.model");
+const Records = require("../models/records.model");
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
