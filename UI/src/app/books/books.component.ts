@@ -22,8 +22,8 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
 
   page: number = 0;
   limit:number =10;
-  skip: number = 0; 
-  // sortNum: string = 'asc';  
+  skip: number = 0;
+  // sortNum: string = 'asc';
 
   private unsubscribe$ = new Subject<void>();   // To manage unsubscriptions
 
@@ -63,28 +63,27 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
     this.skip = (this.page*this.limit);
     this.getMethod();
   }
-  
   public getMethod(): void {
-    
     this.http.get<any>(`http://localhost:3000/api/products/list?limit=${this.limit}&skip=${this.skip}`)
       .pipe(takeUntil(this.unsubscribe$))   //  automatically Unsubscribe on component destruction // You use the takeUntil(this.unsubscribe$) operator to tell Angular that once the unsubscribe$ subject emits a value, any active subscriptions should automatically unsubscribe.
       .subscribe(res => {
 
         console.log("data view",res.products);
         console.log("Count view",this.paginator);
-        
+
         this.dataSource = res.products;
 
         if(res.totalCount){
-          this.isDataAvailable = true;
+          // this.isDataAvailable = true;
         }
-        
-        if (this.paginator) {
-          this.paginator.length = res.totalCount;
-          console.log(this.paginator.length, "this.paginator.length")
-          this.dataSource.paginator = this.paginator;
-        } 
-        this.changeDetectorRef.markForCheck(); // Mark for change detection
+
+        setTimeout(() => {
+          if (this.paginator) {
+            this.paginator.length = res.totalCount;
+            this.dataSource.paginator = this.paginator;
+          }
+          this.changeDetectorRef.markForCheck(); // Mark for change detection
+        }, 1000);
       });
   }
 
