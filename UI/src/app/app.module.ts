@@ -32,6 +32,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { ReactiveFormsModule } from '@angular/forms';
 import { format } from 'path';
 // import { NgxKatexModule } from 'ng-katex';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoaderInterceptor } from './loader.interceptor';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({   //metadata for the module
 
@@ -41,7 +44,8 @@ import { format } from 'path';
     AppComponent,
     BooksComponent,
     GeneratorComponent,
-    DrawerComponent
+    DrawerComponent,
+    LoaderComponent
   ],
 
   // array contains modules that your module is dependent on
@@ -74,7 +78,8 @@ import { format } from 'path';
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
     UsersDataSource,
-    DataService
+    DataService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

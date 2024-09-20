@@ -1,0 +1,32 @@
+.loader-container {
+    position: fixed;
+    /* Make the loader cover the entire screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.116);
+    /* Slight opacity reduction for the background */
+    z-index: 9999;
+    /* Ensure it appears above all other content */
+    pointer-events: none;
+    /* Prevent the loader from interfering with other components */
+}
+
+.spinner {
+    border: 8px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #09f;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
