@@ -156,15 +156,19 @@ queryChain = async (req, res) => {
       let prompt = '';
       if (
         data &&
-        data.subject &&
-        data.role &&
-        data.leaningLevel &&
-        data.format &&
         data.query &&
+        data.format &&
         data.wordLimit &&
-        data.language
+        data.queNum
       ) {
-        prompt = `As a ${data.role} at ${data.leaningLevel} grades seeking expertise in ${data.subject}, I require assistance with ${data.query}. Kindly provide a ${data.format} response in ${data.language}, ideally within ${data.wordLimit} words.`;
+        if(data && data.query && data.format && data.wordLimit && data.queNum){
+
+          if (data.format ==="Paragraph" || data.format ==="Bullet points") {
+          prompt = `As a student seeking expertise, I require assistance with ${data.query}. Kindly provide ${data.format} as a response, ideally within ${data.wordLimit} words.`;
+        }else if(data.format === "Question"){
+        prompt = `As a student seeking expertise, I require assistance with ${data.query}. Kindly provide response in ${data.format} format, ideally about ${data.queNum} questions.`;
+        }
+      }
       } else if (data && data.query && data.query !== '') {
         prompt = data.query;
       }

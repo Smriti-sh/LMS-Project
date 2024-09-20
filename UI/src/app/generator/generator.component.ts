@@ -27,7 +27,7 @@ export class GeneratorComponent implements OnInit {
     query: new FormControl('', [Validators.required, Validators.minLength(3), NameValidator.noExtraSpaces]),
     wordLimit: new FormControl('',[]),
     queNum: new FormControl('', []),
-    answerFormat: new FormControl('', [])
+    format: new FormControl('', [])
   });
   isApiCalling = false;
 

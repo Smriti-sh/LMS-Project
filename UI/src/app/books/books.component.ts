@@ -74,7 +74,7 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
         this.dataSource = res.products;
 
         if(res.totalCount){
-          // this.isDataAvailable = true;
+          this.isDataAvailable = true;
         }
 
         setTimeout(() => {

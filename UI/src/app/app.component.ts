@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,7 +14,8 @@ export class AppComponent {
 
   title = 'LMS';
 
-  pageTitle = 'AI Generator'
+  pageTitle = 'AI Generator';
+  panel:string = 'login';
 
   constructor(
     private router: Router,
@@ -22,10 +24,11 @@ export class AppComponent {
 
   }
 
+switchType(event:string){
+  this.panel = event;
+}
 
-
-
-  updateRoute(route:string) {
+updateRoute(route:string) {
     this.pageTitle = route === 'generator' ? 'Ask Questions': 'Book Records' ;
     this.router.navigate(['', route], {
       relativeTo: this._activatedRoute

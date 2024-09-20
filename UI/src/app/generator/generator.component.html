@@ -26,7 +26,7 @@
         <mat-form-field appearance="fill" class="fields-" style="cursor: pointer;
         min-width: 8rem;">
           <mat-label>Format</mat-label>
-          <mat-select formControlName="answerFormat" (selectionChange)="onFormatChange($event)">
+          <mat-select formControlName="format" (selectionChange)="onFormatChange($event)">
             @for (format of formats; track format) {
             <mat-option [value]="format.value">{{format.value}}</mat-option>
             }
