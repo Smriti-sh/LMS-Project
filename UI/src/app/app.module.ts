@@ -31,10 +31,12 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ReactiveFormsModule } from '@angular/forms';
 import { format } from 'path';
-// import { NgxKatexModule } from 'ng-katex';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoaderInterceptor } from './loader.interceptor';
+import { ApiInterceptor } from './api.interceptor';
 import { LoaderComponent } from './loader/loader.component';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @NgModule({   //metadata for the module
 
@@ -79,7 +81,8 @@ import { LoaderComponent } from './loader/loader.component';
     provideHttpClient(withFetch()),
     UsersDataSource,
     DataService,
-    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
+    CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
