@@ -35,6 +35,7 @@ import { format } from 'path';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoaderInterceptor } from './loader.interceptor';
 import { LoaderComponent } from './loader/loader.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({   //metadata for the module
 
@@ -45,7 +46,8 @@ import { LoaderComponent } from './loader/loader.component';
     BooksComponent,
     GeneratorComponent,
     DrawerComponent,
-    LoaderComponent
+    LoaderComponent,
+    LoginComponent
   ],
 
   // array contains modules that your module is dependent on

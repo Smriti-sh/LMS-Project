@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,22 +10,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AppComponent {
   opened = false;
-
   title = 'LMS';
-
   pageTitle = 'AI Generator';
-  panel:string = 'login';
+  
 
   constructor(
     private router: Router,
     private _activatedRoute: ActivatedRoute
-  ) {
-
-  }
-
-switchType(event:string){
-  this.panel = event;
-}
+  ) {}
 
 updateRoute(route:string) {
     this.pageTitle = route === 'generator' ? 'Ask Questions': 'Book Records' ;
