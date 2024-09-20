@@ -34,12 +34,11 @@ const rateLimiter = rateLimit({
 
 
 
-// Add middleware for auth
-// verifyToken;
 // Routes
+// Add middleware for auth - verifyToken
 app.use('/api/products', rateLimiter, productRoute);
 app.use('/api/llm', rateLimiter, llmRoute);
-app.use('/api/user', rateLimiter, authRoute); // Add this line
+app.use('/api/user', rateLimiter, authRoute);
 
 app.get('/', rateLimiter, (req, res) => {
   res.send('Hello from Node API Server Updated');
