@@ -8,6 +8,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Table } from '../../core/models/Table';
+import { BookService } from '../../services/book.service';
 
 @Component({
   selector: 'app-books',
@@ -38,7 +39,8 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
     private http: HttpClient,
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private bookService: BookService
   ) { }
 
   ngOnInit(): void {
@@ -63,28 +65,25 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
     this.skip = (this.page*this.limit);
     this.getMethod();
   }
-  public getMethod(): void {
-    this.http.get<any>(`http://localhost:5000/api/products/list?limit=${this.limit}&skip=${this.skip}`)
-      .pipe(takeUntil(this.unsubscribe$))   //  automatically Unsubscribe on component destruction // You use the takeUntil(this.unsubscribe$) operator to tell Angular that once the unsubscribe$ subject emits a value, any active subscriptions should automatically unsubscribe.
-      .subscribe(res => {
 
-        console.log("data view",res.products);
-        console.log("Count view",this.paginator);
 
-        this.dataSource = res.products;
-
-        if(res.totalCount){
-          this.isDataAvailable = true;
-        }
-
+  getMethod = async () => {
+    try {
+      const resp = await this.bookService.getBooks(this.skip, this.limit).toPromise();
+      if (resp && resp.totalCount) {
+        this.dataSource = resp.products;
+        this.isDataAvailable = true;
         setTimeout(() => {
           if (this.paginator) {
-            this.paginator.length = res.totalCount;
+            this.paginator.length = resp.totalCount;
             this.dataSource.paginator = this.paginator;
           }
           this.changeDetectorRef.markForCheck(); // Mark for change detection
         }, 1000);
-      });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   openDrawer(): void {
