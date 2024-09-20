@@ -1,5 +1,5 @@
 import { Component, OnInit , ElementRef,ViewChild} from '@angular/core';
-import { Format } from '../../models/Format';
+import { Format } from '../../core/models/format.model';
 import { Routes } from '@angular/router';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { format } from 'path';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
-import { NameValidator } from '../  validators/name.validator';
+import { NameValidator } from '../../core/validators/name.validator';
 
 @Component({
   selector: 'app-generator',
@@ -79,7 +79,7 @@ export class GeneratorComponent implements OnInit {
       selection?.removeAllRanges();
     }
   }
-  
+
   // Capitalize the first letter and the letter after every full stop followed by a space
   capitalizeText() {
     if (this.queryText) {

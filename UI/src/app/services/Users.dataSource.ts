@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Table } from '../../models/Table';
+import { Table } from '../core/models/Table';
 import { DataSource } from '@angular/cdk/collections';  // meant to serve as a place to encapsulate any sorting, filtering, pagination, and data retrieval logic specific to the application.
 import { BehaviorSubject, Observable } from 'rxjs';
 import { connect } from 'http2';
@@ -19,7 +19,7 @@ export class UsersDataSource extends DataSource<Table> {
   constructor(private dataService: DataService){
     super();
   }
- 
+
 
   connect():Observable<Table[]>{
     return this.users$.asObservable();

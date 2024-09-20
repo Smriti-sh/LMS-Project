@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BooksComponent } from './books/books.component';
-import { GeneratorComponent } from './generator/generator.component';
-import { DrawerComponent } from './drawer/drawer.component';
+import { BooksComponent } from './components/books/books.component';
+import { GeneratorComponent } from './components/generator/generator.component';
+import { DrawerComponent } from './components/drawer/drawer.component';
 
 const routes: Routes = [
   {
