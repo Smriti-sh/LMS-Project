@@ -33,6 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { format } from 'path';
 import { ApiInterceptor } from './api.interceptor';
 import { LoaderComponent } from './loader/loader.component';
+import { LoginComponent } from './login/login.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -47,7 +48,8 @@ import { CookieService } from 'ngx-cookie-service';
     BooksComponent,
     GeneratorComponent,
     DrawerComponent,
-    LoaderComponent
+    LoaderComponent,
+    LoginComponent
   ],
 
   // array contains modules that your module is dependent on
