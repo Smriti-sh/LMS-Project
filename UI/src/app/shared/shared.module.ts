@@ -47,8 +47,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { ToastrModule } from "ngx-toastr";
-import { MatPaginator,PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
@@ -101,6 +101,7 @@ import { MatTableDataSource } from '@angular/material/table';
         MatSliderModule,
         MatSnackBarModule,
         MatTreeModule,
+        BrowserAnimationsModule,
         ToastrModule.forRoot({
             timeOut: 5000,
             positionClass: "toast-top-right",
@@ -162,6 +163,7 @@ import { MatTableDataSource } from '@angular/material/table';
         MatSnackBarModule,
         MatTreeModule,
         ToastrModule,
+        BrowserAnimationsModule
     ],
     providers: [],
 })
