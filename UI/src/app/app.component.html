@@ -1,24 +1,3 @@
-<!-- <h1>AI Question Generator</h1>
-<div class="add">
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav [(opened)]="opened" mode="over">
-      <nav>
-        <span id="cross" (click)="sidenav.close()"><svg xmlns="http://www.w3.org/2000/svg" height="24px"
-            viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
-            <path
-              d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
-          </svg></span>
-
-      </nav>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <button (click)="sidenav.toggle()">Add +</button>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div> -->
-
-
-
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side">
 
@@ -30,11 +9,10 @@
 
     </div>
 
-
     <div style="cursor: pointer; color: white; padding: 20px;">
 
       <div class="fuse-vertical-navigation-item-wrapper" (click)="updateRoute('login')">
-        <div class="fuse-vertical-navigation-item">
+        <div class="fuse-vertical-navigation-item" routerLink="">
           <div class="fuse-vertical-navigation-item-title-wrapper">
             <div class="fuse-vertical-navigation-item-title"><span> Home </span></div><!---->
           </div><!---->
@@ -61,7 +39,6 @@
             </div>
           </a></div>
       </div>
-
 
       <div class="ng-star-inserted" (click)="updateRoute('generator')">
         <div class="fuse-vertical-navigation-item-wrapper"><a

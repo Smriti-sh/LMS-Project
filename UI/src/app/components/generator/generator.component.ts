@@ -130,7 +130,7 @@ export class GeneratorComponent implements OnInit {
         () => this.isApiCalling = false
       );
     } else {
-      this.toastr.error('Form is invalid or no file selected.');
+      this.toastr.error('Form is invalid or no query was entered');
     }
   }
 

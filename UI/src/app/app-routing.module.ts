@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BooksComponent } from './components/books/books.component';
 import { GeneratorComponent } from './components/generator/generator.component';
 import { DrawerComponent } from './components/drawer/drawer.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'generator',
     component: GeneratorComponent
+  },
+  {
+    path: '',
+    component: LoginComponent
   }
 ];
 

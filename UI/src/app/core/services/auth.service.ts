@@ -6,14 +6,22 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
-  private apiURL = 'http://your-api-url/login'; // Your API endpoint
+  // private apiURL = 'http://localhost:3000/api/login'; // Your API endpoint
+  private loginURL = 'http://localhost:3000/api/user/login';
+  private registrationURL = 'http://localhost:3000/api/user/register';
+  
 
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(private http: HttpClient, private cookieService: CookieService) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(this.apiURL, { username, password });
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(this.loginURL, { email, password });
+  }
+
+  register(email: string, password: string): Observable<any> {
+    return this.http.post(this.registrationURL, { email, password});
   }
 
   setToken(token: string): void {
@@ -28,3 +36,4 @@ export class AuthService {
     this.cookieService.delete('jwt'); // Removing the token on logout
   }
 }
+

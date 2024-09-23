@@ -32,12 +32,10 @@ const rateLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again after 10 minutes',
 });
 
-
-
 // Routes
 // Add middleware for auth - verifyToken
-app.use('/api/products', rateLimiter, productRoute);
-app.use('/api/llm', rateLimiter, llmRoute);
+app.use('/api/products', rateLimiter, verifyToken, productRoute);
+app.use('/api/llm', rateLimiter, verifyToken, llmRoute);
 app.use('/api/user', rateLimiter, authRoute);
 
 app.get('/', rateLimiter, (req, res) => {

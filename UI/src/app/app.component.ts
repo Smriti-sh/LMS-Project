@@ -11,8 +11,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AppComponent {
   opened = false;
   title = 'LMS';
-  pageTitle = 'AI Generator';
+  pageTitle = 'AI Generator'; 
   
+  pathTitles:{[key:string]:string}={
+    'login': 'Home',
+    'generator': 'Ask Question',
+    'books': 'Book Records'
+  }
 
   constructor(
     private router: Router,
@@ -20,7 +25,9 @@ export class AppComponent {
   ) {}
 
 updateRoute(route:string) {
-    this.pageTitle = route === 'generator' ? 'Ask Questions': 'Book Records' ;
+  
+    this.pageTitle = this.pathTitles[route];
+    // this.pageTitle = route === 'generator' ? 'Ask Questions': 'Book Records' ;
     this.router.navigate(['', route], {
       relativeTo: this._activatedRoute
     });
