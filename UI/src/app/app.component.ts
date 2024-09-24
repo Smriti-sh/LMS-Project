@@ -2,6 +2,8 @@ import { NgClass } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from './core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,9 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private _activatedRoute: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
 updateRoute(route:string) {
@@ -32,6 +36,12 @@ updateRoute(route:string) {
       relativeTo: this._activatedRoute
     });
    }
-  //readonly APIUrl = "http://localhost:5037/api/LMS/";
+
+   logout():void{
+
+    this.authService.logout();
+    this.router.navigate(['']); 
+    this.toastr.success('You have been logged out successfully.');
+  }
 
 }

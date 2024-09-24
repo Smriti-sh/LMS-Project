@@ -66,12 +66,15 @@
   <div class="sidenav-content">
 
     <div style="display: flex; flex-direction: row; align-items: center; height: 60px; border-bottom: 2px solid #2b3245; width: 100%; font-size: large; font-weight: 500;">
-      <div style="color: white; display: flex; flex-direction: row; justify-content: center; align-items: center;">
-        <mat-icon (click)="drawer.toggle()" style="cursor: pointer; color: white; padding: 10px; font-size: 30px;">menu</mat-icon>
-      </div>
-      <div style="color: white; margin-left: 16px; margin-top: 4px;">
-        {{pageTitle}}
-      </div>
+        <div style="color: white; display: flex; flex-direction: row; justify-content: center; align-items: center;">
+          <mat-icon (click)="drawer.toggle()" style="cursor: pointer; color: white; padding: 10px; font-size: 30px;">menu</mat-icon>
+        </div>
+        <div style="color: white; margin-left: 16px; margin-top: 4px;">
+          {{pageTitle}}
+        </div>
+        <div style="color: white; margin-right: 0px; margin-top: 4px; cursor: pointer;" (click)="logout()">
+          Logout
+        </div>
     </div>
 
     <div class="h-full">

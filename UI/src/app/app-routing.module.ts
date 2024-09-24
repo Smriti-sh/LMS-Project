@@ -4,24 +4,19 @@ import { BooksComponent } from './components/books/books.component';
 import { GeneratorComponent } from './components/generator/generator.component';
 import { DrawerComponent } from './components/drawer/drawer.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
-    path: 'books',
-    component: BooksComponent,
-    children: [{
-      path: 'add',
-      component: DrawerComponent
+    path: 'books',component: BooksComponent,  canActivate: [AuthGuard],
+    children: [{path: 'add',component: DrawerComponent
     }]
   },
   {
-    path: 'generator',
-    component: GeneratorComponent
-  },
+    path: 'generator',component: GeneratorComponent, canActivate: [AuthGuard] },
   {
-    path: '',
-    component: LoginComponent
-  }
+    path: '',component: LoginComponent
+ }
 ];
 
 @NgModule({

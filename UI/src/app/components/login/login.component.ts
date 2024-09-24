@@ -15,7 +15,6 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class LoginComponent {
 
-  
   panel:string = 'login';
 
   //for login
@@ -26,6 +25,7 @@ export class LoginComponent {
 
   //for registration
   NewForm: FormGroup = new FormGroup({
+    username: new FormControl('',[Validators.required,NameValidator.noExtraSpaces]),
     email: new FormControl('', [Validators.required,NameValidator.noExtraSpaces]),
     password: new FormControl('',[Validators.required]),
     confirmPassword: new FormControl('',[Validators.required]),
@@ -34,9 +34,11 @@ export class LoginComponent {
   response:any;
   passwordMismatch: ValidatorFn | ValidatorFn[] | null | undefined;
 
-  constructor(private http: HttpClient,
+  constructor(
+    private http: HttpClient,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ){}
 
   customPasswordMatching(NewForm:AbstractControl): { [key: string]: boolean } | null  {
@@ -67,7 +69,7 @@ export class LoginComponent {
       console.log(resp, "Resp");
       if(resp && resp.token){
         this.authService.setToken(resp.token);
-        console.log(this.authService.getToken(), "Token")
+        console.log(this.authService.getToken(), "Token");
       }
     } else{
       this.toastr.error('Form is invalid');
@@ -77,22 +79,21 @@ export class LoginComponent {
     }
   }
  
-
-  // TODO SignUp - email, password, confirmPassword
+  // TODO SignUp - username,email, password, confirmPassword
   onSubmitNew = async () =>{
     try{
       console.log(this.NewForm.value,'----------------'); 
 
-
       if (this.NewForm.valid) {
 
         const signInData = {
+          username: this.NewForm.value.username,
           email: this.NewForm.value.email,
           password: this.NewForm.value.password
         }
         console.log(this.NewForm.value,'----------------'); 
         
-        const resp = await this.authService.register(signInData.email,signInData.password).toPromise();
+        const resp = await this.authService.register(signInData.username,signInData.email,signInData.password).toPromise();
         console.log("resp",resp);
         
         if (resp && resp.token) {
@@ -107,32 +108,8 @@ export class LoginComponent {
       console.log(err);
     }
   }
+}
 
-//   onSubmitNew():void{
 
-//     if (this.SubmitForm.valid ) {
-
-//     const newData = {
-//       email: this.NewForm.value.email, 
-//       pass: this.NewForm.value.password,
-//       password: this.NewForm.value.confirmPass
-//     };
-
-//     this.authService.register(newData.email,newData.pass,newData.password);
-//     this.http.post<any>(`http://localhost:3000/api/register`, newData).subscribe(res=>{
-
-//       console.log('Account created successfully');
-//       this.toastr.success('Account created successfully!');
-//       this.resetForm();
-//     },
-//       error=>{
-//         console.error('Error creating an account', error);
-//         this.toastr.error('There was an error!');
-//         this.resetForm();
-//       });
-//   }else{
-//     this.toastr.error('Form is invalid');
-//   }
-
-// }
+  
 }

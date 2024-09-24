@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 
 export class AuthService {
 
-  // private apiURL = 'http://localhost:3000/api/login'; // Your API endpoint
   private loginURL = 'http://localhost:3000/api/user/login';
   private registrationURL = 'http://localhost:3000/api/user/register';
   
@@ -20,9 +19,15 @@ export class AuthService {
     return this.http.post(this.loginURL, { email, password });
   }
 
-  register(email: string, password: string): Observable<any> {
+  register(username:string,email: string, password: string): Observable<any> {
     return this.http.post(this.registrationURL, { email, password});
   }
+
+    // Check if the token is present in localStorage
+  isLoggedIn(): boolean {
+    const token = this.cookieService.get('jwt'); // true if token exists
+    return !!token;
+   }
 
   setToken(token: string): void {
     this.cookieService.set('jwt', token); // Storing JWT token in cookies

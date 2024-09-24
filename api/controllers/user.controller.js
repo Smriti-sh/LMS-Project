@@ -3,11 +3,11 @@ const generateToken = require('../utils/generateToken');
 
 // Register a new user
 const registerUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
 
   // Check if email and password are provided
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: 'Username, Email and Password are required' });
   }
 
   try {
@@ -18,7 +18,8 @@ const registerUser = async (req, res) => {
     }
 
     // Create new user
-    user = new User({ email, password });
+    user = new User({ username, email, password });
+
     await user.save();
 
     // Generate a JWT token
