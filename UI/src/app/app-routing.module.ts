@@ -16,7 +16,10 @@ const routes: Routes = [
     path: 'generator',component: GeneratorComponent, canActivate: [AuthGuard] },
   {
     path: '',component: LoginComponent
- }
+  },
+  {
+    path: 'login', pathMatch: 'full', redirectTo: ''
+  }
 ];
 
 @NgModule({

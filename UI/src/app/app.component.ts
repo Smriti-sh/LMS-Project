@@ -14,9 +14,9 @@ import { UsersDataSource } from './services/Users.dataSource';
 export class AppComponent {
   opened = false;
   title = 'LMS';
-  pageTitle = 'AI Generator'; 
+  pageTitle = 'AI Generator';
   isLoggedIn:boolean = false;
-  
+
   pathTitles:{[key:string]:string}={
     'login': 'Home',
     'generator': 'Ask Question',
@@ -36,19 +36,21 @@ export class AppComponent {
     })
   }
 
-updateRoute(route:string) {
-  
-    this.pageTitle = this.pathTitles[route];
-    // this.pageTitle = route === 'generator' ? 'Ask Questions': 'Book Records' ;
-    this.router.navigate(['', route], {
-      relativeTo: this._activatedRoute
-    });
+  updateRoute(route: string) {
+
+    if (((route === 'generator' || route === 'books') && this.authService.isLoggedIn()) || (route === 'login' && !this.authService.isLoggedIn())) {
+      this.pageTitle = this.pathTitles[route];
+      // this.pageTitle = route === 'generator' ? 'Ask Questions': 'Book Records' ;
+      this.router.navigate(['', route], {
+        relativeTo: this._activatedRoute
+      });
+    }
    }
 
    logout():void{
     this.authService.logout();
     this.isLoggedIn=false;
-    this.router.navigate(['']); 
+    this.router.navigate(['']);
     this.toastr.success('You have been logged out successfully.');
     }
 
