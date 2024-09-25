@@ -38,7 +38,7 @@ const addDocs = async (data, storeInNewIndex=false) => {
         }),
         {
           client,
-          indexName: 'LMS',
+          indexName: 'AIGen',
           textKey: 'text',
           metadataKeys: ['bookName', 'authorName'],
         }
@@ -55,7 +55,7 @@ const addDocs = async (data, storeInNewIndex=false) => {
         }),
         {
           client,
-          indexName: 'LMS',
+          indexName: 'AIGen',
         }
       );
 
@@ -140,7 +140,7 @@ queryChain = async (req, res) => {
         }),
         {
           client,
-          indexName: 'LMS',
+          indexName: 'AIGen',
           metadataKeys: ['bookName', 'author'],
         }
       );

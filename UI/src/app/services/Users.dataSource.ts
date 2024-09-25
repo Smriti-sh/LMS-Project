@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { connect } from 'http2';
 import { of } from 'rxjs';
 import { DataService } from './data.service';
+import { AuthService } from '../core/services/auth.service';
 // import { FormGroup,FormBuilder } from '@angular/forms';
 
 @Injectable({
@@ -15,9 +16,12 @@ export class UsersDataSource extends DataSource<Table> {
 
   users$ = new BehaviorSubject<Table[]>([]);
   isLoading$ = new BehaviorSubject<boolean>(false);
+  isLoggedIn = new BehaviorSubject<boolean>(false);
 
-  constructor(private dataService: DataService){
+  constructor(private dataService: DataService, private authService: AuthService){
     super();
+
+    this.setLoggedIn(this.authService.isLoggedIn());
   }
 
 
@@ -35,5 +39,13 @@ export class UsersDataSource extends DataSource<Table> {
       this.users$.next(users);
       this.isLoading$.next(false);
     });
+  }
+
+  setLoggedIn(value:boolean){
+    this.isLoggedIn.next(value);
+  }
+
+  getLoggedIn(){
+    return this.isLoggedIn;
   }
 }

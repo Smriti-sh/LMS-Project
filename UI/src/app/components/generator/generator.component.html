@@ -7,17 +7,12 @@
       <div class="box2">
         <mat-form-field appearance="fill" style="margin-top: 10px; width: 90%; margin: 0 auto; padding: 2px;">
           <textarea 
-              style="height: 30px;"
               formControlName="query" 
               type="text" 
               matInput 
               placeholder="Enter your query..." 
               focus (input)="capitalizeText()"
               [(ngModel)]="queryText" ></textarea>
-
-            <!-- <mat-error *ngIf="queryForm.controls['username']">
-              Username is required
-            </mat-error> -->
         </mat-form-field>
       </div>
 

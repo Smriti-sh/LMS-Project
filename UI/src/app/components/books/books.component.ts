@@ -66,7 +66,6 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
     this.getMethod();
   }
 
-
   getMethod = async () => {
     try {
       const resp = await this.bookService.getBooks(this.skip, this.limit).toPromise();
@@ -79,7 +78,7 @@ export class BooksComponent implements OnInit,AfterViewInit, OnDestroy {
             this.dataSource.paginator = this.paginator;
           }
           this.changeDetectorRef.markForCheck(); // Mark for change detection
-        }, 1000);
+        }, 2000);
       }
     } catch (error) {
       console.log(error);

@@ -15,8 +15,8 @@
             Add Books
           </button>
         </div>
-        <div class="flex flex-col table-container" style="margin: 2%; height: calc(82vh - 50px); overflow: hidden;" *ngIf="isDataAvailable; else noProducts">
-          <div style="height: calc(82vh - 60px); overflow-y: auto;">
+        <div class="flex flex-col table-container" style="margin: 2%; height: calc(82vh - 50px); overflow: hidden;">
+          <div style="height: calc(82vh - 60px); overflow-y: auto;" *ngIf="isDataAvailable; else noProducts">
             <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8 tbl">
               <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef > No. </th>

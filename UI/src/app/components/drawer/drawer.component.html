@@ -10,7 +10,7 @@
         </div>
       </ng-container>
       <div class="flex items-center">
-        <button [disabled]="bookForm.invalid" mat-icon-button  (click)="onSubmit()" class="mr-1 hover:bg-primary-900" title="Create">
+        <button [disabled]="bookForm.invalid" mat-icon-button  (click)="onSubmit()" class="mr-1 hover:bg-primary-900" title="Create" style="cursor: pointer;">
           <mat-icon class="text-white" type="submit" >check</mat-icon>
         </button>
         <button mat-icon-button [routerLink]="['../']" class="mr-1 hover:bg-red-900" title="Close">

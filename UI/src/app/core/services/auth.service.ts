@@ -19,8 +19,8 @@ export class AuthService {
     return this.http.post(this.loginURL, { email, password });
   }
 
-  register(username:string,email: string, password: string): Observable<any> {
-    return this.http.post(this.registrationURL, { email, password});
+  register(username:string, email: string, password: string): Observable<any> {
+    return this.http.post(this.registrationURL, { username, email, password});
   }
 
     // Check if the token is present in localStorage

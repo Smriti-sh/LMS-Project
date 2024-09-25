@@ -69,11 +69,14 @@
         <div style="color: white; display: flex; flex-direction: row; justify-content: center; align-items: center;">
           <mat-icon (click)="drawer.toggle()" style="cursor: pointer; color: white; padding: 10px; font-size: 30px;">menu</mat-icon>
         </div>
-        <div style="color: white; margin-left: 16px; margin-top: 4px;">
-          {{pageTitle}}
-        </div>
-        <div style="color: white; margin-right: 0px; margin-top: 4px; cursor: pointer;" (click)="logout()">
-          Logout
+        <div style="display: flex; flex-direction: row; width: 100%; justify-content: space-between;
+">
+          <div style="color: white; margin-left: 16px; margin-top: 4px;">
+            {{pageTitle}}
+          </div>
+          <div style="color: white; margin-right: 10px; margin-top: 4px; cursor: pointer;" (click)="logout()" *ngIf="isLoggedIn">
+            Logout
+          </div>
         </div>
     </div>
 

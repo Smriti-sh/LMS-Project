@@ -125,9 +125,9 @@ body {
 
 .form {
 	overflow: hidden;
-	min-width: 260px;
+	min-width: 275px;
 	margin-top: 50px;
-	padding: 30px 25px;
+	padding: 15px 20px;
   border-radius: 5px;
 	transform-origin: top;
 }
@@ -236,7 +236,7 @@ body {
 }
 
 .input-block {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
 
 .input-block label {
@@ -262,7 +262,7 @@ body {
 	opacity: 0;
 	display: block;
 	min-width: 120px;
-	margin: 30px auto 10px;
+	margin: 20px auto 15px;
 	font-size: 18px;
 	line-height: 40px;
 	border-radius: 25px;

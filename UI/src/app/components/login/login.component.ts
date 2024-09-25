@@ -7,6 +7,7 @@ import { NameValidator } from '../../core/validators/name.validator';
 import { ToastrService } from 'ngx-toastr';
 import { error, log } from 'console';
 import { AuthService } from '../../core/services/auth.service';
+import { UsersDataSource } from '../../services/Users.dataSource';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ import { AuthService } from '../../core/services/auth.service';
 export class LoginComponent {
 
   panel:string = 'login';
+  isLoggedIn:boolean=false;
 
   //for login
   SubmitForm: FormGroup = new FormGroup({
@@ -25,7 +27,7 @@ export class LoginComponent {
 
   //for registration
   NewForm: FormGroup = new FormGroup({
-    username: new FormControl('',[Validators.required,NameValidator.noExtraSpaces]),
+    username: new FormControl('',[Validators.required]),
     email: new FormControl('', [Validators.required,NameValidator.noExtraSpaces]),
     password: new FormControl('',[Validators.required]),
     confirmPassword: new FormControl('',[Validators.required]),
@@ -33,12 +35,14 @@ export class LoginComponent {
 
   response:any;
   passwordMismatch: ValidatorFn | ValidatorFn[] | null | undefined;
+  static isLoggedIn: any;
 
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private $UsersDataSource: UsersDataSource
   ){}
 
   customPasswordMatching(NewForm:AbstractControl): { [key: string]: boolean } | null  {
@@ -66,10 +70,13 @@ export class LoginComponent {
       };
   
       const resp = await this.authService.login(loginData.email,loginData.password).toPromise();
+      this.resetForm();
       console.log(resp, "Resp");
       if(resp && resp.token){
         this.authService.setToken(resp.token);
-        console.log(this.authService.getToken(), "Token");
+        this.$UsersDataSource.setLoggedIn(true);
+        this.resetForm();
+       this.router.navigate(['/books']);
       }
     } else{
       this.toastr.error('Form is invalid');
@@ -82,24 +89,21 @@ export class LoginComponent {
   // TODO SignUp - username,email, password, confirmPassword
   onSubmitNew = async () =>{
     try{
-      console.log(this.NewForm.value,'----------------'); 
-
       if (this.NewForm.valid) {
-
         const signInData = {
           username: this.NewForm.value.username,
           email: this.NewForm.value.email,
           password: this.NewForm.value.password
         }
-        console.log(this.NewForm.value,'----------------'); 
-        
         const resp = await this.authService.register(signInData.username,signInData.email,signInData.password).toPromise();
         console.log("resp",resp);
         
         if (resp && resp.token) {
           this.authService.setToken(resp.token);
+          this.isLoggedIn = false;
           console.log("Token", this.authService.getToken());
-          
+          this.resetForm();
+          this.router.navigate(['/books']);
         }else{
           this.toastr.error("Form is invalid")
         }
@@ -108,8 +112,5 @@ export class LoginComponent {
       console.log(err);
     }
   }
-}
-
-
   
 }
