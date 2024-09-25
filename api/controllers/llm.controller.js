@@ -122,19 +122,116 @@ const readPdf = async (filePath, data) => {
   }
 };
 
+// queryChain = async (req, res) => {
+//   try {
+//     const data = req.body;
+//     if (data && data.query && data.query !== '') {
+
+//       const client = weaviate.client({
+//         scheme: 'https',
+//         host: 'yzfyasyhroftxobszxkg.c0.asia-southeast1.gcp.weaviate.cloud',
+//         apiKey: new weaviate.ApiKey('3I2jRBj9Wq8I2tVPN3nkTudvxdULv86eXHqh'),
+//       });
+
+
+//       const loadedVectorStore = await WeaviateStore.fromExistingIndex(
+//         new OpenAIEmbeddings({
+//           OPENAI_API_KEY,
+//         }),
+//         {
+//           client,
+//           indexName: 'AIGen',
+//           metadataKeys: ['bookName', 'author'],
+//         }
+//       );
+
+//       const vectorStoreRetriever = loadedVectorStore.asRetriever();
+//       const model = new ChatOpenAI({
+//         modelName: 'gpt-3.5-turbo',
+//         OPENAI_API_KEY,
+//       });
+
+//       const chain = RetrievalQAChain.fromLLM(model, vectorStoreRetriever);
+
+//       let prompt = '';
+//       if (
+//         data &&
+//         data.query &&
+//         data.format &&
+//         data.wordLimit &&
+//         data.queNum
+//       ) {
+//         if(data && data.query && data.format && data.wordLimit && data.queNum){
+
+//           if (data.format ==="Paragraph" || data.format ==="Bullet points") {
+//           prompt = `As a student seeking expertise, I require assistance with ${data.query}. Kindly provide ${data.format} as a response, ideally within ${data.wordLimit} words.`;
+//         }else if(data.format === "Question"){
+//         prompt = `As a student seeking expertise, I require assistance with ${data.query}. Kindly provide response in ${data.format} format, ideally about ${data.queNum} questions.`;
+//         }
+//       }
+//       } else if (data && data.query && data.query !== '') {
+//         prompt = data.query;
+//       }
+
+//       if (data && data.isLatexIncluded) {
+//         prompt +=
+//           ' Use LaTeX for coefficients, symbols, expressions, and equations with double dollar signs($$).';
+//       }
+
+//       const startTime = performance.now();
+
+//       const answer = await chain.call({
+//         query: prompt,
+//       });
+
+//       const endTime = performance.now();
+//       const executionTime = endTime - startTime;
+//       console.log(`Execution time: ${executionTime} milliseconds`);
+
+//       const completionText = answer.text;
+
+//       //TODO insert query and response in DB
+//       const saveRecords = new Records({
+//         prompt,
+//         answer:answer.text
+//       });
+//       await saveRecords.save();
+
+
+//       if (completionText) {
+//         return res.status(200).json({
+//           status: true,
+//           query: prompt,
+//           answer: completionText
+//         });
+//       }
+
+//       return res.status(200).json({
+//         status: false,
+//         query: prompt,
+//         message: 'something went wrong!'
+//       });
+//     }
+
+//     return  res.status(400).json({ message: 'Invalid payload!' });
+//   } catch (err) {
+//     console.log(err, " ---------------- Error ---------------- ");
+//     return res.status(400).json(err);
+//   }
+// };
+
 queryChain = async (req, res) => {
   try {
     const data = req.body;
     if (data && data.query && data.query !== '') {
-
       const client = weaviate.client({
         scheme: 'https',
         host: 'yzfyasyhroftxobszxkg.c0.asia-southeast1.gcp.weaviate.cloud',
         apiKey: new weaviate.ApiKey('3I2jRBj9Wq8I2tVPN3nkTudvxdULv86eXHqh'),
       });
 
-
       const loadedVectorStore = await WeaviateStore.fromExistingIndex(
+
         new OpenAIEmbeddings({
           OPENAI_API_KEY,
         }),
@@ -154,28 +251,21 @@ queryChain = async (req, res) => {
       const chain = RetrievalQAChain.fromLLM(model, vectorStoreRetriever);
 
       let prompt = '';
-      if (
-        data &&
-        data.query &&
-        data.format &&
-        data.wordLimit &&
-        data.queNum
-      ) {
-        if(data && data.query && data.format && data.wordLimit && data.queNum){
 
-          if (data.format ==="Paragraph" || data.format ==="Bullet points") {
-          prompt = `As a student seeking expertise, I require assistance with ${data.query}. Kindly provide ${data.format} as a response, ideally within ${data.wordLimit} words.`;
-        }else if(data.format === "Question"){
-        prompt = `As a student seeking expertise, I require assistance with ${data.query}. Kindly provide response in ${data.format} format, ideally about ${data.queNum} questions.`;
+      if (data && data.query) {
+        prompt = `As a student seeking expertise, I require assistance with ${data.query}.`;
+
+        if (data.format === 'Paragraph' || data.format === 'Bullet points') {
+          prompt += ` Kindly provide ${data.format} as a response`;
+          if (data.wordLimit && data.wordLimit !== '') {
+            prompt += `, ideally within ${data.wordLimit} words.`;
+          }
+        } else if (data.format === 'Question') {
+          prompt = ` Kindly provide response in ${data.format} format`;
+          if (data.queNum && data.queNum !== '') {
+            prompt += `, ideally about ${data.queNum} questions.`;
+          }
         }
-      }
-      } else if (data && data.query && data.query !== '') {
-        prompt = data.query;
-      }
-
-      if (data && data.isLatexIncluded) {
-        prompt +=
-          ' Use LaTeX for coefficients, symbols, expressions, and equations with double dollar signs($$).';
       }
 
       const startTime = performance.now();
@@ -192,30 +282,29 @@ queryChain = async (req, res) => {
 
       //TODO insert query and response in DB
       const saveRecords = new Records({
-        query,
-        answer:answer.text
+        query: prompt,
+        answer: answer.text,
       });
       await saveRecords.save();
-
 
       if (completionText) {
         return res.status(200).json({
           status: true,
           query: prompt,
-          answer: completionText
+          answer: completionText,
         });
       }
 
       return res.status(200).json({
         status: false,
         query: prompt,
-        message: 'something went wrong!'
+        message: 'something went wrong!',
       });
     }
 
-    return  res.status(400).json({ message: 'Invalid payload!' });
+    return res.status(400).json({ message: 'Invalid payload!' });
   } catch (err) {
-    console.log(err, " ---------------- Error ---------------- ");
+    console.log(err, ' ---------------- Error ---------------- ');
     return res.status(400).json(err);
   }
 };
