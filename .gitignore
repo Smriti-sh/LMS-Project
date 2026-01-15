@@ -1,3 +1,4 @@
 /api/node_modules/
 /UI/node_modules/
 UI/.angular
+api/.env
