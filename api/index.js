@@ -1,57 +1,103 @@
+// const express = require('express');
+// const mongoose = require('mongoose');
+// const productRoute = require('./routes/product.route');
+// const llmRoute = require('./routes/llm.route');
+// const authRoute = require('./routes/user.route'); // Add this line
+// const multer = require('multer');
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const app = express();
+// require('dotenv').config();
+// const verifyToken = require('./utils/auth'); // Import the middleware
+
+// // mongoose.Promise = global.Promise;
+
+// // Middleware
+// app.use(bodyParser.json());
+// app.use(cors());
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+
+// // app.use((req, res, next) => {
+// //   res.header("Access-Control-Allow-Origin", "*"); //allows requests from any origin (domain), which is useful for enabling access from other domains.
+// //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); //specifies which headers are allowed in incoming requests.
+// //   next();
+// // });
+
+// const rateLimit = require('express-rate-limit');
+
+// const rateLimiter = rateLimit({
+//   windowMs: 2 * 60 * 1000, // 10 minutes
+//   max: 50, // limit each IP to 10 requests per windowMs
+//   message: 'Too many requests from this IP, please try again after 10 minutes',
+// });
+
+// // Routes
+// // Add middleware for auth - verifyToken
+// app.use('/api/products', rateLimiter, verifyToken, productRoute);
+// app.use('/api/llm', rateLimiter, verifyToken, llmRoute);
+// app.use('/api/user', rateLimiter, authRoute);
+
+// app.get('/', rateLimiter, (req, res) => {
+//   res.send('Hello from Node API Server Updated');
+// });
+
+// mongoose
+//   .connect(
+//     'mongodb+srv://lms2024_db_user:rmXYZpYWrjSxzN91@lms-backend.kt8es0w.mongodb.net/?appName=lms-backend'
+//   )
+//   .then(() => {
+//     console.log('Connected to database!');
+//     app.listen(3000, () => {
+//       console.log('Server is running on port 3000');
+//     });
+//   })
+//   .catch(() => {
+//     console.log('Connection failed!');
+//   });
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const rateLimit = require('express-rate-limit');
+
 const productRoute = require('./routes/product.route');
 const llmRoute = require('./routes/llm.route');
-const authRoute = require('./routes/user.route'); // Add this line
-const multer = require('multer');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
-require('dotenv').config();
-const verifyToken = require('./utils/auth'); // Import the middleware
+const authRoute = require('./routes/user.route');
+const verifyToken = require('./utils/auth');
 
-// mongoose.Promise = global.Promise;
+const app = express();
 
 // Middleware
-app.use(bodyParser.json());
 app.use(cors());
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*"); //allows requests from any origin (domain), which is useful for enabling access from other domains.
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"); //specifies which headers are allowed in incoming requests.
-//   next();
-// });
-
-const rateLimit = require('express-rate-limit');
-
 const rateLimiter = rateLimit({
-  windowMs: 2 * 60 * 1000, // 10 minutes
-  max: 50, // limit each IP to 10 requests per windowMs
-  message: 'Too many requests from this IP, please try again after 10 minutes',
+  windowMs: 2 * 60 * 1000,
+  max: 50,
+  message: 'Too many requests from this IP, please try again later',
 });
 
 // Routes
-// Add middleware for auth - verifyToken
 app.use('/api/products', rateLimiter, verifyToken, productRoute);
 app.use('/api/llm', rateLimiter, verifyToken, llmRoute);
 app.use('/api/user', rateLimiter, authRoute);
 
-app.get('/', rateLimiter, (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello from Node API Server Updated');
 });
 
+// DB connection
 mongoose
-  .connect(
-    'mongodb+srv://lms2024_db_user:rmXYZpYWrjSxzN91@lms-backend.kt8es0w.mongodb.net/?appName=lms-backend'
-  )
-  .then(() => {
-    console.log('Connected to database!');
-    app.listen(3000, () => {
-      console.log('Server is running on port 3000');
-    });
-  })
-  .catch(() => {
-    console.log('Connection failed!');
-  });
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log('Connected to database'))
+  .catch(err => console.error('DB connection failed:', err));
+
+// IMPORTANT: Listen on Render port
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

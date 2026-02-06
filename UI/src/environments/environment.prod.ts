@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiBaseUrl: '' // Production API URL
+    apiBaseUrl: 'https://lms-project-om9p.onrender.com' // Production API URL
 };
