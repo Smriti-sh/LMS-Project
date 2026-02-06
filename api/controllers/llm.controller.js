@@ -21,8 +21,8 @@ const { query } = require('express');
 
 const client = weaviate.client({
   scheme: 'https',
-  host: 'yzfyasyhroftxobszxkg.c0.asia-southeast1.gcp.weaviate.cloud',
-  apiKey: new weaviate.ApiKey('3I2jRBj9Wq8I2tVPN3nkTudvxdULv86eXHqh'),
+  host: '2ncnhikftaizjnmc7ioo7q.c0.asia-southeast1.gcp.weaviate.cloud',
+  apiKey: new weaviate.ApiKey('OVpncVk5ZGw4aWlnRDhUQl85R2hGeUlIRktVelZNTlRhM0krZDlrUkRIYnpyUWttUzl1ZVNSMmlWTWJ3PV92MjAw'),
 });
 
 const addDocs = async (data, storeInNewIndex=false) => {
@@ -226,8 +226,8 @@ queryChain = async (req, res) => {
     if (data && data.query && data.query !== '') {
       const client = weaviate.client({
         scheme: 'https',
-        host: 'yzfyasyhroftxobszxkg.c0.asia-southeast1.gcp.weaviate.cloud',
-        apiKey: new weaviate.ApiKey('3I2jRBj9Wq8I2tVPN3nkTudvxdULv86eXHqh'),
+        host: '2ncnhikftaizjnmc7ioo7q.c0.asia-southeast1.gcp.weaviate.cloud',
+        apiKey: new weaviate.ApiKey('OVpncVk5ZGw4aWlnRDhUQl85R2hGeUlIRktVelZNTlRhM0krZDlrUkRIYnpyUWttUzl1ZVNSMmlWTWJ3PV92MjAw'),
       });
 
       const loadedVectorStore = await WeaviateStore.fromExistingIndex(

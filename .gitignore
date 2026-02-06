@@ -1,4 +1,28 @@
 /api/node_modules/
 /UI/node_modules/
-UI/.angular
-api/.env
+/UI/.angular
+/api/.env
+
+# Node
+node_modules/
+
+# Environment
+.env
+
+# macOS
+.DS_Store
+
+# Uploads & generated files
+uploads/
+api/uploads/
+
+# PDFs & binaries
+*.pdf
+*.zip
+*.jpg
+*.jpeg
+*.png
+
+# Build output
+dist/
+build/

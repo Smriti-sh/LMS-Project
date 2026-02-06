@@ -44,7 +44,7 @@ app.get('/', rateLimiter, (req, res) => {
 
 mongoose
   .connect(
-    'mongodb+srv://admin:123abc456@cluster0.zuaefuo.mongodb.net/Node-API?retryWrites=true&w=majority&appName=Cluster0'
+    'mongodb+srv://lms2024_db_user:rmXYZpYWrjSxzN91@lms-backend.kt8es0w.mongodb.net/?appName=lms-backend'
   )
   .then(() => {
     console.log('Connected to database!');
